@@ -1,0 +1,222 @@
+\documentclass[conference]{IEEEtran}
+
+% Packages
+
+\usepackage{latexsym}
+\usepackage{epic,eepic}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage[dvips]{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{ulem}
+\usepackage{amssymb}
+
+% Tunning
+%------------------
+\usepackage[12pt]{moresize}
+\algtext*{EndIf}% Remove "end if" text
+\algtext*{EndFor}% Remove "end if" text
+%\setlength{\belowcaptionskip}{10.0pt}
+%\setlength{\abovecaptionskip}{10.0pt}
+%\setlength{\textfloatsep}{10.0pt}
+%\setlength{\floatsep}{10.0pt}
+% TUNNING
+%\setstretch{0.94}
+%\fontsize{3.85mm}{3.85mm}\selectfont
+
+
+\newcommand{\pf}[1]{\langle#1\rangle}
+\newcommand{\noproof}{\hfill $qed$}
+\newcommand{\ignore}[1]{}
+
+\definecolor{gray50}{gray}{0.15}
+\graphicspath{{pictures/}}
+
+
+
+\newtheorem{definition}{Definition} % [section]
+\newtheorem{example}{Example} % [section]
+\newcommand{\pivot}[1]{\mathbin{\, {#1} \,}}
+\newcommand{\Pivot}[1]{\mathbin{\; {#1} \;}}
+\let\from=\leftarrow
+
+% Pretty ref
+\usepackage{prettyref}
+\newrefformat{def}{Definition~\ref{#1}}
+\newrefformat{fig}{Figure~\ref{#1}}
+\newrefformat{tab}{Table~\ref{#1}}
+%\newrefformat{pro}{Property~\ref{#1}}
+%\newrefformat{pps}{Proposition~\ref{#1}}
+%\newrefformat{lem}{Lemma~\ref{#1}}
+\newrefformat{th}{Theorem~\ref{#1}}
+\newrefformat{sec}{Section~\ref{#1}}
+%\newrefformat{subsec}{Subsect.~\ref{#1}}
+%\newrefformat{suppl}{Appendix~\ref{#1}}
+\newrefformat{ex}{Example~\ref{#1}}
+%\newrefformat{eq}{Eq.~\eqref{#1}}
+\def\pref{\prettyref}
+
+
+%Package CAV
+\usepackage[english]{babel}
+\usepackage{stmaryrd} % Maths (crochets doubles)
+\usepackage{url}     % Mise en forme + liens pour URLs
+%\usepackage{array}   % Tableaux évolués
+\usepackage{setspace}
+
+% Commande perso
+\newcommand{\ie}{i.e.,\ }
+\newcommand{\eg}{e.g.,\ }
+\newcommand{\resp}{resp.\ }
+
+
+% Citation
+\usepackage{cite}
+
+% **** ASP language ***
+\usepackage{listings}
+\lstdefinelanguage{ASP}{%
+literate={:-}{$\leftarrow$}1,
+morekeywords={not},
+numbers=left,
+escapeinside={\%}{\^^M}
+}
+% Définition des styles de tous les listings du document
+\lstset{
+language=ASP,
+basicstyle=\small\ttfamily,
+columns=fullflexible,
+keywordstyle=\bfseries,
+firstnumber=last,
+keepspaces=true
+}
+\renewcommand{\thelstnumber}{\the\value{lstnumber}}
+%% fin définition
+
+% Styles ASP inline
+\newcommand{\ASPnot}{\textbf{not}~}
+
+% les inputs files
+\input{macros/macros}
+\input{macros/macros-ph}
+\input{macros/tikzstyles2.tex}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Exhaustive analysis of dynamical properties of biological regulatory networks}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+
+% conference papers do not typically use \thanks and this command
+% is locked out in conference mode. If really needed, such as for
+% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
+% after \documentclass
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+% 
+\author{\IEEEauthorblockN{Emna Ben Abdallah\IEEEauthorrefmark{1}, Maxime Folschette\IEEEauthorrefmark{2}, Olivier Roux\IEEEauthorrefmark{1} and Morgan Magnin\IEEEauthorrefmark{3} }
+
+\IEEEauthorblockA{\IEEEauthorrefmark{1}LUNAM Universit\'e, \'Ecole Centrale de Nantes, IRCCyN UMR CNRS 6597\\
+(Institut de Recherche en Communications et Cybern\'etique de Nantes), 1 rue de la No\"e, 44321 Nantes, France.\\ 
+ Email: emna.ben-abdallah@irccyn.ec-nantes.fr \\
+ olivier.roux@irccyn.ec-nantes.fr
+ }
+\IEEEauthorblockA{\IEEEauthorrefmark{2}School of Electrical Engineering and Computer Science, University of Kassel, Germany \\
+Email: maxime.folschette@uni-kassel.de}
+\IEEEauthorblockA{\IEEEauthorrefmark{3}National Institute of Informatics, 2-1-2, Hitotsubashi, Chiyoda-ku, Tokyo 101-8430, Japan.\\
+ Email: morgan.magnin@irccyn.ec-nantes.fr
+ }}
+
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+In this paper, we propose a new logical approach to perform model-checking on a restriction of synchronous automata networks, namely Process Hitting. The Process Hitting framework is notably suitable, but not limited, to model and analyze efficiently biological regulatory networks. 
+The originality of our model-checking approach relies in the use of Answer Set Programming to consider exhaustive enumeration of all possible solutions of a property with respect to a given execution length.  Our work here focuses on state reachability properties (which are equivalent to the CTL ``$\mathsf{EF}$'' operator with paths limited to a given length) on the one hand, on the identification of fixed points on the other hand.
+The merits of our methods is illustrated by applying them to
+biological examples of various sizes
+and comparing the results with some existing approaches.
+It turns out that our approach succeeds in processing large models
+with a high number of components and interactions.
+\end{abstract}
+
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+\input{parts/intro.tex}
+
+\section{Preliminary definitions}
+\label{sec:defs}
+\input{parts/ASP}
+\subsection{Process Hitting}
+\input{parts/PH}
+
+\section{Fixed point enumeration}
+\label{sec:fixpoint}
+\input{parts/fixPoint}
+
+\section{Dynamical analysis}
+\label{sec:dynamics}
+\input{parts/reachability}
+
+\section{Comparative performance analysis}
+\label{sec:comparison}
+\input{parts/comparaison}
+
+%\vspace{-1.0cm}
+
+\section{Conclusion and future directions}
+\label{sec:ccl}
+\input{parts/cc}
+
+
+
+\section{Conclusion}
+The conclusion goes here.
+
+
+
+
+% conference papers do not normally have an appendix
+
+
+% use section* for acknowledgement
+\section*{Acknowledgment}
+
+
+The authors would like to thank...
+
+
+\bibliographystyle{./IEEEtran}
+\bibliography{./biblio}
+
+
+\end{document}
+
+
