@@ -1,48 +1,12 @@
-For more than a decade, model-checking and SAT-solvers developments have been strongly connected \cite{biere1999symbolic}. Among different reasons, the main ones are related to some of the drawbacks of Binary Decision Diagrams (BDD) -based symbolic approaches, that are:
-\begin{itemize}
-\item BDD-based structures require some canonical form to be given so that a total order can be defined; 
-\item They often become too large;
-\item Variable ordering is crucial to the performances of the approaches.  
-\end{itemize}
+The paper is motivated by the problem of steady states identification as well as reachability problem in biological regulatory systems that describes genes and proteins interactions. Indeed the regulatory phenomena play a crucial role in biological systems, they need to be studied accurately. That’s why the study of Biological Regulatory Networks (BRNs) has been the subject of numerous researches. BRNs consist in sets of either positive or negative mutual effects between the components. With the purpose of analyzing these systems, they are often modeled as graphs which makes it possible to determine the possible evolutions of all the interacting components of the system. Thus, in order to address the formal checking of dynamical properties within very large BRNs, new formalisms and conversely new techniques have been proposed during the last decade. For example, Boolean networks \cite{stuart1993origins} \cite{kauffman1969metabolic} have been used due to their simplicity and ability to handle noisy data but lose data information by having a binary representation of the genes. Besides, artificial neural networks omit using a hidden layer so that they can be interpreted, losing the ability to model higher order correlations in the data. We can cite some works that used these models and which have been developed to verify the dynamic properties of BRNs modeled : GINsim (Gene Interaction Network simulation) \cite{chaouiya2012logical, gonzalez2006ginsim} is a computer tool for the modeling and simulation of genetic regulatory networks. It allows the user to simulate a model and/or analyse its qualitative dynamical behavior. The inconvenient of this tool is the difficulty of analyzing the big networks. Indeed, in order to verifying a dynamical property it is necessary to compute the boolean network from the corresponding Thomas network. We can cite also libDDD (Library of Data Decision Diagrams) a library for symbolic model-checking of CTL \& LTL properties. It can thus especially be used to check reachability properties. But it cannot output the execution path solving the reachability.The computing tests show that \textsc{LibDDD} and \textsc{GINsim} take a long time to respond, and gets out of memory for the big examples (more than 40 components).  %à revoir
+%Several other promising modeling and analysing techniques have been used, including Boolean networks, Petri nets, Bayesian networks, we can cite {ref des autres travaux sur l’atteignabilité} \ref{paoletti2014analyzing}
 
-Behind the use of SAT, respectively ASP, to perform model-checking, there is the intuitive idea that the existence of a trace satisfying a given property expressed in LTL \cite{biere1999symbolic} or CTL can be reduced to the satisfiability of an equivalent logic formula, respectively a logic program. But first it should be reduced to universal properties \cite{penczek2002bounded}, then extended to other properties. Although there have been some works in the field of unbounded model-checking \cite{mcmillan2002applying}, it generally requires to consider bounded traces, which gave birth to the concept of Bounded Model-Checking (BMC). Its principle is following: given a discrete model $M$ (which, equipped with a semantics, leads to a transition system), a property $\varphi$ and $k \in \mathbb{N}$, does $M$ allow a counterexample to $\varphi$ of $k$ (or fewer) transitions? 
+It is also common to model biological networks with a set of coupled ordinary differential equations (ODEs) \cite{chu2009models}, describing the kinetic reactions. But the temporal evolution of the systems modeled by ODEs is computed by a complex derivation approach. This complexity of computing the evolution so that the verification of the dynamic properties causes also a long time to respond. 
 
-Bounded model-checking has been the subject of numerous researches. On the one hand, it suffers from some limitations. Indeed, it leads to incomplete analysis: if the SAT solver proves that the problem given as input is unsatisfiable for a length $k$, it only proves there are no counterexamples of length $k$. Finding bounds on the length is difficult and worst case is exponential. On the other hand, SAT is a viable alternative to BDD-based symbolic model-checking. It is also an efficient approach for debugging, \ie quickly find counterexamples of minimal length. 
+New experimental results \cite{elowitz2002stochastic} \cite{blake2003noise} demonstrated that gene expression is a stochastic process. Thus, many biologists and bioinformaticians are now using the stochastic formalism \cite{arkin1998stochastic}. This formalism permits to represent each gene expression \cite{raser2005noise} and small synthetic genetic networks, \cite{elowitz2000synthetic} \cite{gardner2000construction}. Such that our new formalism named Process Hitting (PH) \cite{PMR10-TCSB}. It models concurrent systems having components with a few qualitative levels. Furthermore, PH is suitable, according to the precision of the available information, to model BRNs with different levels of abstraction by capturing the most general dynamics.
+Thus, in order to address the formal checking of dynamical properties within very large BRNs, we recently introduced a new formalism, named the "Process Hitting'' (PH) \cite{PMR10-TCSB}, to model concurrent systems having components with a few qualitative levels. A PH describes, in an atomic manner, the possible evolutions of a "process'' (representing one component at one level) triggered by the hit of other "processes’’ in the system. Comparing with other models of BRNs, this particular structure of PH makes the formal analysis of BRNs with hundreds of components easier to be tractable. This was proved by a first work on the PH in \cite{PMR12-MSCS} which analysis big networks and gives a response through a short time. But this developed technic was based on abstract methods computing approximations of the dynamics that can be inconclusive in some cases. Moreover, in the case of a positive answer, it currently does not return the execution of the path achieving the desired reachability, but only outputs its conclusion.
 
-Recently, the rise of ASP has also given birth to some innovative approaches, taking profit of the performances of ASP to process efficient model-checking algorithms. In \cite{rocca2013inference}, the authors proposed an approach to perform LTL and CTL model-checking through ASP, with the goal to infer and learn (synchronous) Boolean networks. This method has been refined in the context of (asynchronous) Thomas' biological regulatory networks in \cite{roccaasp}. 
+Our goal in this paper is to develop exhaustive methods that analyze Biological Regulatory Network modeled in Process Hitting. We will prove that these methods are exhaustive and fast. In addition it returns the execution path for the reachability problem and all the stable states of a model.
 
-As regulatory phenomena play a crucial role in biological systems, they need to
-be studied accurately. Biological Regulatory Networks (BRNs) consist in sets
-of either positive or negative mutual effects between the components. With the
-purpose of analyzing these systems, they are often modeled as graphs which makes
-it possible to determine the possible evolutions of all the interacting components of the system. Thus, in order to address the formal checking of dynamical properties within very large BRNs, we recently introduced a new formalism, named the ``Process Hitting'' (PH) \cite{PMR10-TCSB}, to model concurrent systems having components with a few qualitative levels. A PH describes, in an atomic manner, the possible evolutions of a ``process'' (representing one component at one level) triggered by the hit of at most one other ``process'' in the system. This particular structure makes the formal analysis of BRNs with hundreds of components tractable by using abstract methods computing approximations of the dynamics \cite{PMR12-MSCS}. Furthermore, PH is suitable, according to the precision of the available information, to model BRNs with different levels of abstraction by capturing the most general dynamics.
-
-The objectives of the work presented in this paper are the following.
-Firstly, we show that starting from a PH model, it is possible to find all possible
-fixed points (also called stable states)
-which are specific attractors with exactly one state. \cite{wuensche1998genomic}).
-For this, we perform an exhaustive search of the possible states and then check which ones are fixed points.
-The second phase of our work consists in computing the dynamics by determining, from a given initial state, the possible next states of the PH model.
-This also permits to check if a goal is reachable for a given component or set of components in the system.
-The results are ensured to respect strictly the PH dynamics.
-
-The particularity of our contribution relies in the use of Answer Set Programming
-(ASP) \cite{baral2003knowledge}
-to compute the result of these searches.
-This declarative programming framework has been proven efficient
-to tackle models with a large number of components and parameters.
-Our aim here is to assess its potential w.r.t.\ the computation
-of some dynamical properties of PH models.
-In this paper, we show that ASP turns out to be effective
-for these enumerative searches, which justifies its use.
-In some cases, the computed dynamics can also be bounded by a given
-number of evolution steps.
-
-%\pref{sec:defs} defines
-%the paradigm of Answer Set Programming, and
-%the Process Hitting framework.
-%Then we use ASP in \pref{sec:fixpoint} to tackle the enumeration of all fixed points in a model,
-%and in \pref{sec:dynamics} in order to compute the dynamics of a model and check reachability properties.
-%Finally, a comparison of the methods developed in this paper is proposed in \pref{sec:comparison},
-%and \pref{sec:ccl} allows to conclude and talk about future work.
-%The definition and use of ASP is briefly explained in Appendix.
+The paper is organised as follows % à remplir
+We conclude the paper with a short discussion. 
