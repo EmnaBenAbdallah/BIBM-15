@@ -1,4 +1,4 @@
-
+\label{sec:prem-def}
 
 \pref{def:PH} introduces the Process Hitting~(PH)~\cite{PMR10-TCSB}
 which allows to model a finite number of local levels,
@@ -25,7 +25,7 @@ changes the local state of exactly one automaton,
 and is triggered by the local states of at most two distinct automata.
 This restriction in the form of the actions was chosen to permit
 the development of efficient static analysis methods
-based on abstract interpretation~\cite{PMR12-MSCS}.
+based on abstract interpretation~\cite{PMR12-MSCS} as well as the dynamic analysis that we present in this paper. In addition due to this restriction we need to add non biological components into the system that allow to present the cooperation between $2$ or more components which we call \emph{cooperative sorts}. So it maintains the effectiveness of the static and dynamic analysis.
 
 \begin{definition}[Process Hitting]\label{def:PH}
   A \emph{Process Hitting} is a triple $(\PHs,\PHl,\PHa)$ where:
@@ -41,57 +41,74 @@ based on abstract interpretation~\cite{PMR12-MSCS}.
   \end{itemize}
 \end{definition}
 
-%\begin{definition}[Action]
-%\label{def:PhAction}
-%An action is noted $\PHfrappe{a_i}{b_j}{b_k}$ where $a_i$ is a process
-%of sort $a$ and $b_j$, $b_k$ two processes of sort $b$. When $a_i = b_j$ , such an action is refered as a self-action and $a_i$
-%is called a self-hitting process.
-%\end{definition}
-
 \begin{example}
-\pref{fig:ph} represents a PH $(\PHs,\PHl,\PHa)$ with three sorts
-($\PHs = \{a, b, c\}$) and:
-$\PHl_a = \{a_0, a_1\}$,
-$\PHl_b = \{b_0, b_1\}$,
-$\PHl_z = \{z_0, z_1, z_2\}$.
+
+\tikzstyle{prio}=[draw,thick,-stealth]
+
 \begin{figure}[ht]
-\centering
-\begin{tikzpicture}%[font=\scriptsize]
-%\path[use as bounding box] (0,-1) rectangle (4,4);
+\pref{fig:ph} represents a PH $(\PHs,\PHl,\PHa)$ with four sorts
+  \centering
+  \scalebox{1.4}{
+  \begin{tikzpicture}
+    \TSort{(0,0)}{a}{2}{b}
+    \TSort{(0,4)}{b}{2}{t}
+    \TSort{(5,0.5)}{z}{2}{r}
 
-\TSort{(0,0)}{z}{3}{l}
-\TSort{(2,4)}{b}{2}{t}
-\TSort{(4,1)}{a}{2}{r}
-\THit{b_0}{}{z_1}{.east}{z_2}
-\THit{b_1}{}{z_0}{.north east}{z_2}
-\THit{a_0}{}{b_1}{.south}{b_0}
-\THit{a_1}{out=60,in=0,selfhit}{a_1}{.east}{a_0}
+    \TSetTick{ab}{0}{00}
+    \TSetTick{ab}{1}{01}
+    \TSetTick{ab}{2}{10}
+    \TSetTick{ab}{3}{11}
+    \TSort{(0.5,2)}{ab}{4}{t}
 
-\path[bounce,bend right]
-\TBounce{z_1}{}{z_2}{.south}
-\TBounce{z_0}{bend right=50}{z_2}{.south east}
-;
-\path[bounce,bend left]
-\TBounce{a_1}{}{a_0}{.north}
-\TBounce{b_1}{}{b_0}{.south}
-;
+    \THit{a_0}{}{ab_3}{.south west}{ab_1}
+    \THit{a_0}{}{ab_2}{.south west}{ab_0}
+    \THit{a_1}{}{ab_1}{.south}{ab_3}
+    \THit{a_1}{}{ab_0}{.south}{ab_2}
 
- \THit{z_0}{}{a_0}{.west}{a_1} 
+    \THit{b_0}{}{ab_3}{.north}{ab_2}
+    \THit{b_0}{}{ab_1}{.north}{ab_0}
+    \THit{b_1}{}{ab_2}{.north}{ab_3}
+    \THit{b_1}{}{ab_0}{.north}{ab_1}
+    
+    \THit{b_1}{selfhit}{b_1}{.north west}{b_0}
+    \THit{a_0}{bend left}{b_0}{.south west}{b_1}
 
-\path[bounce,bend left]
-\TBounce{a_0}{}{a_1}{.south}
-;
-\TState{a_0,b_0,z_1}
-\end{tikzpicture}
-\caption{\label{fig:ph} 
-A PH model example with three sorts: $a$, $b$ and $z$ ($a$ is either at level 0 or 1, $b$ at either level 0 or 1 and $z$ at either level 0, 1 or 2). Boxes represent the sorts (network components), circles represent the processes (component levels), and the 5 actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. The grayed processes stand for the possible initial state $\PHstate{a_1, b_0, z_1}$.
-}
+    \THit{ab_3}{}{z_0}{.west}{z_1}
+
+    \path[bounce, bend right]
+     \TBounce{ab_1}{}{ab_3}{.south}
+     \TBounce{ab_0}{}{ab_2}{.south}
+     \TBounce{ab_3}{}{ab_2}{.east}
+     \TBounce{ab_1}{}{ab_0}{.east}
+    ;
+    \path[bounce, bend left]
+      \TBounce{ab_3}{}{ab_1}{.south east}
+      \TBounce{ab_2}{}{ab_0}{.south east}
+      \TBounce{ab_2}{}{ab_3}{.west}
+      \TBounce{ab_0}{}{ab_1}{.west}
+    ;
+    \path[bounce, bend right]
+      \TBounce{b_1}{}{b_0}{.north east}
+      \TBounce{b_0}{}{b_1}{.south west}
+    ;
+    \path[bounce, bend left]
+      \TBounce{z_0}{}{z_1}{.south west}
+    ;
+    \TState{a_0, b_0, ab_0, z_0}
+  \end{tikzpicture}
+  }
+  \caption{\label{fig:ph}
+A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (network components), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$ is either at level 0 or 1, $b$ at either level 0 or 1, $z$ at either level 0, 1 or 2 and the cooperative sort $ab$ has 4 levels corresponding to the combinaison of the levels of the corresponding sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
+  }
 \end{figure}
+
+
 \end{example}
+
 A state of the networks is a set of active processes containing a single process of each sort.
 The active process of a given sort $a \in \PHs$ in a state $s \in \PHl$
 is noted $\PHget{s}{a}$.
-For any given process $a_i$ we also note: $a_i \in s$ if and only if $\PHget{s}{a} = a_i$.
+For any given process $a_i$ we also note: $a_i \in s$ if and only if $\PHget{s}{a} = a_i$. It means that the component, or the \emph{sort}, $a$ is at level $i$ during the state $s$.
 
 \begin{definition} [Playable action]
 \label{def:playableAction}
@@ -106,27 +123,18 @@ where $\PHget{(s \play h)}{b} = b_k$ and
 $\forall c \in \PHs, c \neq b \Rightarrow \PHget{(s \play h)}{c}=\PHget{s}{c}$.
 \end{definition}
 
-The PH was chosen for several reasons.
-First, it is a general framework that,
-although it was mainly used for biological networks,
-allows to represent any kind of dynamical model,
-and converters to several other representations are available (see \pref{sec:comparison}).
-Although an efficient dynamical analysis already exists for this framework,
+PH was chosen for several reasons. It is a general framework that was mainly used for biological networks. Besides, it allows to represent any kind of dynamical model,
+and converters to several other representations are available and included into \textsc{Pint}\footnote{\textsc{Pint} version 2015-11-14: \url{http://loicpauleve.name/pint/}}~\cite{PMR12-MSCS}. Espacially for the particular form of the actions in a PH model allows
+to easily represent them using the Answer Set Programming \cite{Baral03, Vladimir, Glimpse, sureshkumar2006ansprolog},
+with one fact per action. We note that although an efficient dynamical analysis already exists for this framework,
 based on an approximation of the dynamics,
 it is interesting to identify its limits
-and compare them to the approach we present later in this paper.
-Finally, the particular form of the actions in a PH model allow
-to easily represent them in ASP,
-with one fact per action, as described in the next section.
-Other representations may have required supplementary complexity;
-for instance, a labeling would be required
-if actions could be triggered by a variable number of processes.
+and compare them to the exhaustive approach we present in this paper.
 
 \subsection{Dynamical properties}
 
 The study of the dynamics of biological networks was the focus of many works, explaining the diversity of network modelings and the different methods developed in order to check dynamic properties.
-In this paper we focus on 2 main properties: the stable states and the reachability,
-which were already formalized and tackled by other methods in~\cite{PMR10-TCSB,PMR12-MSCS}.
+In this paper we focus on 2 main properties: the stable states and the reachability.
 In the following, we consider a PH model $(\PHs,\PHl,\PHa)$,
 and we formally define these properties
 and explain how they could be verified on such a network.
@@ -143,7 +151,7 @@ and the existence of several of these states denotes a switch in the dynamics~\c
   A state $s \in \PHl$ is called a \emph{fixed point}
   (or equivalently \emph{stable state})
   if and only if it has no successors.
-  In other words, $s$ is a fixed point if an only if no action is playable in this state:
+  In other words, and in $PH$ symantic, $s$ is a fixed point if and only if no action is playable in this state:
   \[\forall \PHfrappe{a_i}{b_j}{b_k} \in \PHa, a_i \notin s \vee b_j \notin s \enspace.\]
 \end{definition}
 
@@ -173,10 +181,5 @@ the set of all process in $\PH$.
     \enspace.\]
 \end{definition}
 
-The rest of the paper focuses on the resolution of the previous issues
-with the use of ASP.
-The enumeration of all fixed points of a PH model will be tackled in
-\pref{sec:fixpoint}
-and the verification of a reachability property will be the subject of
-\pref{sec:dynamics}.
-The semantics of ASP is given in Appendix.
+The rest of the paper focuses on the resolution of the previous issues. We demonstrate our algorithms about: the simulation of a biological regulatory network modeled in PH,
+the enumeration of all fixed points (\pref{sec:fixpoint} and the verification of a reachability property will (\pref{sec:dynamics}).
