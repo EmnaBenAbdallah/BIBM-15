@@ -193,9 +193,8 @@ namely identifying stable states and finding all possible paths and the shortest
 Compared to some other methods describes above
 (\textsc{GINsim} and \textsc{LibDDD}) our method is relatively faster and also permits to study larger networks
 (up to $2^{73}$ states in our tests). We exclusively study networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover it is easy to implement the dynamics of the PH into ASP.
-%However, our ASP program may still be bounded in the cases where the given goal is not reachable.
-%% NEW
-\textcolor{red}{In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
+
+In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
 But still, \textsc{Iclingo} (the itiratif version of Clingo) will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate or it should terminat as unsatifaible.
 To our knowledge, there is still no possibility to force the incrementation to stop in \textsc{Iclingo}.
 It is still possible, however, to limit the number of iterations to an arbitrary
@@ -233,11 +232,15 @@ the computation stops with an \texttt{unsatisfiable} response for the reachabili
  Non-reachability & Bounded & Bounded \\
 \hline
  Search & Depth first & Breadth first \\
+  \hline
+ Exec. time: small imax & seconds/minutes & seconds/minutes \\
+ \hline
+ Exec. time: big imax & hours/out &seconds/minutes  \\
 \hline
 \end{tabular}
 \vspace*{4pt}
 \caption{\label{tab:qualitative_differences}
-\textcolor{red}{Qualitative comparison between our approach and \textsc{ASP-Thomas}.}
+Qualitative comparison between our approach and \textsc{ASP-Thomas}.
 }
 \end{center}
 \end{table}
