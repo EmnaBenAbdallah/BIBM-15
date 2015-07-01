@@ -86,15 +86,15 @@ and the number of results returned.
   & Model & Target & \textsc{ASP-Thomas} & \textsc{Pint} & \textsc{LibDDD} & \textsc{GINsim} & \textsc{ASP-PH} \\
 \hline
 \hline
-  \#1 & TTR & full state & 0m7.21s & 0m0.97s & 0m1.15s &  0m2.05s & 0m1.90s \\
+  \#1 & TTR & full state & 0m7.21s/ & 0m0.97s & 0m1.15s &  0m2.05s & {\bf 0m1.90s} \\
 \hline
-  \#2 & ERBB & full state & 0m2.45s & out &1m55.38s & 2m31.64s & 0m11.84s \\
+  \#2 & ERBB & full state & {\bf 0m2.45s}/ & out &1m55.38s & 2m31.64s & 0m11.84s \\
 \hline
-  \#3 & ERBB & partial state & 0m2.61s & 0m0.03s &1m54.96s & - & 0m5.02s \\
+  \#3 & ERBB & partial state & {\bf 0m2.61s}/ & 0m0.03s &1m54.96s & - & 0m5.02s \\
 \hline
-  \#4 & TCR & full state & 0m7.61s& Inconc & out & out & 6m27.93s \\
+  \#4 & TCR & full state & {\bf 0m7.61s}/ & Inconc & out & out & 6m27.93s \\
 \hline
-  \#5 & TCR & partial state & 0m2.12s & 0m0.02s & out & - & 1m35.08s \\
+  \#5 & TCR & partial state & {\bf 0m2.12s}/ & 0m0.02s & out & - & 1m35.08s \\
 \hline
 \end{tabular}
 \vspace*{4pt}
@@ -108,6 +108,37 @@ and the computation time of the different methods used for the tests,
 where “out” marks an execution taking too much time or memory,
 \mbox{“~-~”} indicates that is not possible to do the test,
 and “Inconc” states that the method terminates without a response.
+}
+\end{center}
+\end{table*}
+
+% Tableau qualitatif
+% Bound
+% Loop detection
+% Search:
+
+\begin{table*}[ht]
+\begin{center}
+\noindent%
+\begin{tabular}{|l|l|c||c|c|c|c|c|}
+\hline
+  & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
+\hline
+\hline
+ Input Model & Thomas network & Process hitting \\
+\hline
+ Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
+\hline
+ Reachability & Bounded & {\bf Unbounded} \\
+\hline
+ Unreachability & Bounded & Bounded \\
+\hline
+ Exploration method & Complete depth first search & {\bf Iterative} best first search \\
+\hline
+\end{tabular}
+\vspace*{4pt}
+\caption{\label{tab:qualitative_differences}
+Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
 }
 \end{center}
 \end{table*}
