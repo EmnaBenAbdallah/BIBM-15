@@ -81,26 +81,26 @@ and the number of results returned.
 \noindent%
 \begin{tabular}{|l|l|c||c|c|c|c|c|}
 \hline
-  \multicolumn{3}{|c||}{Experiments} & \multicolumn{5}{c|}{Results} \\
+  \multicolumn{3}{|c||}{Experiments} & \multicolumn{4}{c|}{Results} \\
 \hline
-  & Model & Target & \textsc{ASP-Thomas} & \textsc{Pint} & \textsc{LibDDD} & \textsc{GINsim} & \textsc{ASP-PH} \\
+  & Model & Target  & \textsc{Pint} & \textsc{LibDDD} & \textsc{GINsim} & \textsc{ASP-PH} \\
 \hline
 \hline
-  \#1 & TTR & full state & 0m7.21s & 0m0.97s & 0m1.15s &  0m2.05s & 0m1.90s \\
+  \#1 & TTR & full state & 0m0.97s & 0m1.15s &  0m2.05s & 0m1.90s \\
 \hline
-  \#2 & ERBB & full state & 0m2.45s & out &1m55.38s & 2m31.64s & 0m11.84s \\
+  \#2 & ERBB & full state & out &1m55.38s & 2m31.64s & 0m11.84s \\
 \hline
-  \#3 & ERBB & partial state & 0m2.61s & 0m0.03s &1m54.96s & - & 0m5.02s \\
+  \#3 & ERBB & partial state  & 0m0.03s &1m54.96s & - & 0m5.02s \\
 \hline
-  \#4 & TCR & full state & 0m7.61s & Inconc & out & out & 6m27.93s \\
+  \#4 & TCR & full state & Inconc & out & out & 6m27.93s \\
 \hline
-  \#5 & TCR & partial state & 0m2.12s & 0m0.02s & out & - & 1m35.08s \\
+  \#5 & TCR & partial state & 0m0.02s & out & - & 1m35.08s \\
 \hline
 \end{tabular}
 \vspace*{4pt}
 \caption{\label{tab:reachability}
 Compared performances of several methods to compute reachability analyses:
-The method of Rocca \textit{et al.} (denoted by \textsc{ASP-Thomas}), \textsc{Pint}, \textsc{LibDDD}, \textsc{GINsim} and our new method presented in this paper, called \textsc{ASP-PH}.
+The method of \textsc{Pint}, \textsc{LibDDD}, \textsc{GINsim} and our new method presented in this paper, called \textsc{ASP-PH}.
 For each test, this table gives the short name of the considered model,
 as given in table~\ref{tab:models},
 the type of goal (either a whole state or a sub-state)
