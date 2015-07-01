@@ -117,51 +117,6 @@ and “Inconc” states that the method terminates without a response.
 % Loop detection
 % Search:
 
-\begin{table*}[ht]
-\begin{center}
-\noindent%
-\begin{tabular}{|l|l|c||c|c|c|c|c|}
-\hline
-  & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
-\hline
-\hline
- Input Model & Thomas network & Process hitting \\
-\hline
- Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
-\hline
- Reachability & Bounded & {\bf Unbounded} \\
-\hline
- Unreachability & Bounded & Bounded \\
-\hline
- Exploration method & Complete depth first search & {\bf Iterative} best first search \\
-\hline
-\end{tabular}
-\vspace*{4pt}
-\caption{\label{tab:qualitative_differences}
-Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
-}
-\end{center}
-\end{table*}
-
- %Avec ASP-Thomas on doit connaitre apriori la bound du check.
- %Si on peut avoir une bonne aproximation safe de la taille du chemin on a des résultat efficace.
- %Par contre si la bound est incconue, en choissisant une trop petite on peut loupé une reachabilité.
- %Au contraire avec une bound trop grande on va impacter les performances de façon significative.
- %Sur le benchmark <nomdubenchmark> l'objectif est atteint avec un chemin de taille 18.
- %En fixant une bound à 21 on termine en moins d'une seconde. En fixant une bound à 100 on dépasse la minute.
-
-	In \textsc{ASP-Thomas} the search is bounded.
-	If the number of step to reach the goal is part of the goal or if one can know apriori know the length of the path to reach the specified goal,
-	this approach can provide very good performance.
-	But if the bound is totally unknown, choosing a too small path lenght can lead to missing the goal and thus to conclude unreachable when it is reachable.
-	On the other hand, chossing a to big bound will greatly impact the performance.
-	On "ERBB partial state", the goal is reachable with a path of 18 steps.
-	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
-	If we fix the bound to 50 it takes several minutes.
-	We can observe similar results on the others benchmarks.
-	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
-	In \textsc{ASP-Thomas}, run time only depends of the choosen bound, because all paths of the choosen length will be generated before being checked.
-
 \begin{itemize}
 
 \item \textbf{\textsc{ASP-Thomas}}\footnote{These tests have been performed on another computer: dual core 2.13GHZ with 1.8GB RAM. The authors wish to thank Laurent Trilling for his help.}
@@ -257,3 +212,48 @@ is bigger than the longest possible path without loop in the state-transition gr
 Given our implementation, if the step \texttt{n} gives no valid path,
 the computation stops with an \texttt{unsatisfiable} response.
 %and there is no path to be displayed because there is no path which verifies the goals after \texttt{n} changes. Indeed this permits to get a final result, which is \texttt{unsatisfable} property after \texttt{n} steps so with this way we eliminate the unlimitaded execution time.
+
+\begin{table*}[ht]
+\begin{center}
+\noindent%
+\begin{tabular}{|l|l|c||c|c|c|c|c|}
+\hline
+  & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
+\hline
+\hline
+ Input Model & Thomas network & Process hitting \\
+\hline
+ Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
+\hline
+ Reachability & Bounded & {\bf Unbounded} \\
+\hline
+ Unreachability & Bounded & Bounded \\
+\hline
+ Exploration method & Complete depth first search & {\bf Iterative} best first search \\
+\hline
+\end{tabular}
+\vspace*{4pt}
+\caption{\label{tab:qualitative_differences}
+Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
+}
+\end{center}
+\end{table*}
+
+ %Avec ASP-Thomas on doit connaitre apriori la bound du check.
+ %Si on peut avoir une bonne aproximation safe de la taille du chemin on a des résultat efficace.
+ %Par contre si la bound est incconue, en choissisant une trop petite on peut loupé une reachabilité.
+ %Au contraire avec une bound trop grande on va impacter les performances de façon significative.
+ %Sur le benchmark <nomdubenchmark> l'objectif est atteint avec un chemin de taille 18.
+ %En fixant une bound à 21 on termine en moins d'une seconde. En fixant une bound à 100 on dépasse la minute.
+
+	In \textsc{ASP-Thomas} the search is bounded.
+	If the number of step to reach the goal is part of the goal or if one can know apriori know the length of the path to reach the specified goal,
+	this approach can provide very good performance.
+	But if the bound is totally unknown, choosing a too small path lenght can lead to missing the goal and thus to conclude unreachable when it is reachable.
+	On the other hand, chossing a to big bound will greatly impact the performance.
+	On "ERBB partial state", the goal is reachable with a path of 18 steps.
+	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
+	If we fix the bound to 50 it takes several minutes.
+	We can observe similar results on the others benchmarks.
+	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
+	In \textsc{ASP-Thomas}, run time only depends of the choosen bound, because all paths of the choosen length will be generated before being checked.
