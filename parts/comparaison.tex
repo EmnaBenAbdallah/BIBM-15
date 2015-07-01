@@ -260,10 +260,10 @@ the computation stops with an \texttt{unsatisfiable} response.
 	this approach can provide very good performance.
 	But if the bound is totally unknown, choosing a too small path length can lead to missing the goal and thus to conclude unreachable when it is reachable.
 	On the other hand, choosing a to big bound will greatly impact the performance.
-	On TTR, the goal is reachable with a path of 18 steps.
-	Using a bound of 21, \textsc{ASP-Thomas} finish in 7.21s.
-	If we fix the bound to 50 it takes several minutes.
+	On ERBB partial, the goal is reachable with a path of 18 steps.
+	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
+	If we fix the bound to 30 it takes several minutes.
 	We can observe similar results on the others benchmarks.
 	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
-	In \textsc{ASP-Thomas}, run time only depends of the choosen bound, because all paths of the choosen length will be generated before being checked.
+	In \textsc{ASP-Thomas}, run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
 	}
