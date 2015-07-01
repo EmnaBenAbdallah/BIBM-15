@@ -86,15 +86,15 @@ and the number of results returned.
   & Model & Target & \textsc{ASP-Thomas} & \textsc{Pint} & \textsc{LibDDD} & \textsc{GINsim} & \textsc{ASP-PH} \\
 \hline
 \hline
-  \#1 & TTR & full state & 0m7.21s/ & 0m0.97s & 0m1.15s &  0m2.05s & {\bf 0m1.90s} \\
+  \#1 & TTR & full state & 0m7.21s/ & 0m0.97s & 0m1.15s &  0m2.05s & 0m1.90s \\
 \hline
-  \#2 & ERBB & full state & {\bf 0m2.45s}/ & out &1m55.38s & 2m31.64s & 0m11.84s \\
+  \#2 & ERBB & full state & 0m2.45s/ & out &1m55.38s & 2m31.64s & 0m11.84s \\
 \hline
-  \#3 & ERBB & partial state & {\bf 0m2.61s}/ & 0m0.03s &1m54.96s & - & 0m5.02s \\
+  \#3 & ERBB & partial state & 0m2.61s/ & 0m0.03s &1m54.96s & - & 0m5.02s \\
 \hline
-  \#4 & TCR & full state & {\bf 0m7.61s}/ & Inconc & out & out & 6m27.93s \\
+  \#4 & TCR & full state & 0m7.61s/ & Inconc & out & out & 6m27.93s \\
 \hline
-  \#5 & TCR & partial state & {\bf 0m2.12s}/ & 0m0.02s & out & - & 1m35.08s \\
+  \#5 & TCR & partial state & 0m2.12s/ & 0m0.02s & out & - & 1m35.08s \\
 \hline
 \end{tabular}
 \vspace*{4pt}
@@ -246,7 +246,8 @@ Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
  %Sur le benchmark <nomdubenchmark> l'objectif est atteint avec un chemin de taille 18.
  %En fixant une bound à 21 on termine en moins d'une seconde. En fixant une bound à 100 on dépasse la minute.
 
-	In \textsc{ASP-Thomas} the search is bounded.
+	Table \ref{tab:qualitative_differences} give a summary of the differences between our approach and \textsc{ASP-Thomas}.
+	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
 	If the number of step to reach the goal is part of the goal or if one can know apriori know the length of the path to reach the specified goal,
 	this approach can provide very good performance.
 	But if the bound is totally unknown, choosing a too small path lenght can lead to missing the goal and thus to conclude unreachable when it is reachable.
