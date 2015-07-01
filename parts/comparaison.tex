@@ -187,10 +187,10 @@ However, our ASP program may still be non-conclusive
 in the cases where the given goal is not
 reachable.
 %% NEW
-In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
+\textcolor{red}{In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
 But still, iClingo will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate.
 To our knowledge, there is still no possibility to force the incrementation to stop in iClingo except by putting loop detection as a goal,
-then the search will stop when a loop is found and will not try to search for reachability.
+then the search will stop when a loop is found and will not try to search for reachability.}
 %and the model contains loops in its dynamics.
 %In this case, the program will compute all infinite paths in these loops,
 %and never reach a goal or a fixed point.
@@ -219,10 +219,10 @@ Given our implementation, if the step \texttt{n} gives no valid path,
 the computation stops with an \texttt{unsatisfiable} response.
 %and there is no path to be displayed because there is no path which verifies the goals after \texttt{n} changes. Indeed this permits to get a final result, which is \texttt{unsatisfable} property after \texttt{n} steps so with this way we eliminate the unlimitaded execution time.
 
-\begin{table*}[ht]
+\begin{table}[ht]
 \begin{center}
 \noindent%
-\begin{tabular}{|l|l|c||c|c|c|c|c|}
+\begin{tabular}{|l|l|c|}
 \hline
   & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
 \hline
@@ -235,15 +235,16 @@ the computation stops with an \texttt{unsatisfiable} response.
 \hline
  Non-reachability & Bounded & Bounded \\
 \hline
- Exploration method & Complete depth first search & {\bf Iterative} Breadth first search \\
+ Search & Depth first & Breadth first \\
 \hline
 \end{tabular}
 \vspace*{4pt}
 \caption{\label{tab:qualitative_differences}
-Qualitative comparison between our approach and \textsc{ASP-Thomas}.
+\textcolor{red}{Qualitative comparison between our approach and \textsc{ASP-Thomas}.}
 }
 \end{center}
-\end{table*}
+\end{table}
+
 
  %Avec ASP-Thomas on doit connaitre apriori la bound du check.
  %Si on peut avoir une bonne aproximation safe de la taille du chemin on a des résultat efficace.
@@ -252,6 +253,7 @@ Qualitative comparison between our approach and \textsc{ASP-Thomas}.
  %Sur le benchmark <nomdubenchmark> l'objectif est atteint avec un chemin de taille 18.
  %En fixant une bound à 21 on termine en moins d'une seconde. En fixant une bound à 100 on dépasse la minute.
 
+	\textcolor{red}{
 	Table \ref{tab:qualitative_differences} give a summary of the differences between our approach and \textsc{ASP-Thomas}.
 	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
 	If the number of step to reach the goal is part of the goal or if one can know a priori know the length of the path to reach the specified goal,
@@ -264,3 +266,4 @@ Qualitative comparison between our approach and \textsc{ASP-Thomas}.
 	We can observe similar results on the others benchmarks.
 	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
 	In \textsc{ASP-Thomas}, run time only depends of the choosen bound, because all paths of the choosen length will be generated before being checked.
+	}
