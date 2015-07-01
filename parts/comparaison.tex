@@ -185,11 +185,17 @@ Compared to some other methods describes above
 (up to $2^{73}$ states in our tests). We exclusively study networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover it is easy to implement the dynamics of the PH into ASP.
 However, our ASP program may still be non-conclusive
 in the cases where the given goal is not
-reachable and the model contains loops in its dynamics.
-In this case, the program will compute all infinite paths in these loops,
-and never reach a goal or a fixed point.
+reachable.
+%% NEW
+In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
+But still, iClingo will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate.
+To our knowledge, there is still no possibility to force the incrementation to stop in iClingo except by putting loop detection as a goal,
+then the search will stop when a loop is found and will not try to search for reachability.
+%and the model contains loops in its dynamics.
+%In this case, the program will compute all infinite paths in these loops,
+%and never reach a goal or a fixed point.
 It is still possible, however, to limit the number of iterations to an arbitrary
-maximum which will be eventually reached in the case of an endless loop.
+maximum which will be eventually reached in such case. %in the case of %an endless loop.
 This is possible with the option "\texttt{-{}-imax=n}'' of \textsc{iClingo},
 where \texttt{n} is the maximum number of steps.
 %%
