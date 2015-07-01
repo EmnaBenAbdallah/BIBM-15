@@ -26,7 +26,7 @@ These models were chosen to be of different sizes:
 from small (12 components) to large (40 components).
 We note however that the considered PH models may contain more sorts than
 the original number of biological components, due to the use of
-``cooperative sorts'', which allow to model Boolean gates but do not necessarily
+"cooperative sorts'', which allow to model Boolean gates but do not necessarily
 have a biological meaning.
 The different model representations that are required for performing these benchmarks have been obtained by translations
 from the PH
@@ -119,17 +119,6 @@ and “Inconc” states that the method terminates without a response.
 
 \begin{itemize}[leftmargin=*]
 
-\item \textbf{\textsc{ASP-Thomas}}\footnote{These tests have been performed on another computer: dual core 2.13GHZ with 1.8GB RAM. The authors wish to thank Laurent Trilling for his help.}
-offers the possibility to model-check CTL properties of Thomas networks. 
-There is however no automatic way that allows the modeling of Thomas networks in ASP, which currently has to be made by hand and requires labeling. As for our method, we use the PH whose actions are easily represented in ASP with one fact per action.
-In addition, the method ``\textsc{ASP-Thomas}'' requires to provide a maximum number of steps
-for which the dynamics will be computed, which may be difficult to be predicted.
-However it is clear that this approach terminates very quickly when compared with others.
-Indeed it also shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
-Furthermore, this method is able to check any kind of CTL formula,
-and not only the "$\mathsf{EF}$'' form that we focused on in this paper
-(see the discussion in \pref{sec:limitations}).
-
 \item \textbf{\textsc{GINsim}} is a software for the edition, simulation and analysis
 of gene interaction networks.
 It allows to compute all reachable stable states from a given initial state instantly;
@@ -170,7 +159,29 @@ or an exponential research in sub-solutions
 This explains the high computation times for some tests in \pref{tab:reachability}.
 Moreover, in the case of a positive answer,
 it currently does not return the execution of the path achieving the desired reachability,
-but only outputs its conclusion.
+but only outputs its conclusion (True, False or Inconclusive).
+
+\item \textbf{\textsc{ASP-Thomas}}\footnote{The authors wish to thank Laurent Trilling for his help to perform the tests.}
+offers the possibility to model-check CTL properties of Thomas networks. 
+There is however no automatic way that allows the modeling of Thomas networks in ASP, which currently has to be made by hand and requires labeling. As for our method, we use the PH whose actions are easily represented in ASP with one fact per action.
+In addition, the method "\textsc{ASP-Thomas}'' requires to provide a maximum number of steps
+for which the dynamics will be computed, which may be difficult to be predicted. Also all dynamics of the system have to be computed untill $n$ steps so that they do a depth first verification. Comparing with our method that is not obligatory to reach the $n_{th}$ step, the program will stop at the first step that reach the goals: breath first search.
+However it is clear that with a minimal number of steps this approach terminates very quickly when compared with others.
+Indeed it also shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
+The a summary of differences between our approach and \textsc{ASP-Thomas} is detailed in table \ref{tab:qualitative_differences}.
+	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
+	If the number of step to reach the goal is part of the goal or if one can know a priori know the length of the path to reach the specified goal,
+	this approach can provide very good performance.
+	But if the bound is totally unknown, choosing a too small path length can lead to missing the goal and thus to conclude unreachable when it is reachable.
+	On the other hand, choosing a to big bound will greatly impact the performance.
+	On ERBB partial, the goal is reachable with a path of 18 steps.
+	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
+	If we fix the bound to 30 it takes several minutes.
+	We can observe similar results on the others benchmarks.
+	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
+	In \textsc{ASP-Thomas}, run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
+	
+
 \end{itemize}
 
 \subsection{Strengths and limitations of our method}
@@ -178,31 +189,19 @@ but only outputs its conclusion.
 
 In the previous sections,
 we developed new methods in ASP to check dynamical properties,
-namely identifying stable states and finding all possible paths to reach a given goal.
+namely identifying stable states and finding all possible paths and the shortest ones to reach a given goal.
 Compared to some other methods describes above
-%and the method \textsc{ASP-Thomas}
 (\textsc{GINsim} and \textsc{LibDDD}) our method is relatively faster and also permits to study larger networks
 (up to $2^{73}$ states in our tests). We exclusively study networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover it is easy to implement the dynamics of the PH into ASP.
-However, our ASP program may still be non-conclusive
-in the cases where the given goal is not
-reachable.
+%However, our ASP program may still be bounded in the cases where the given goal is not reachable.
 %% NEW
 \textcolor{red}{In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
-But still, iClingo will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate.
-To our knowledge, there is still no possibility to force the incrementation to stop in iClingo except by putting loop detection as a goal,
-then the search will stop when a loop is found and will not try to search for reachability.}
-%and the model contains loops in its dynamics.
-%In this case, the program will compute all infinite paths in these loops,
-%and never reach a goal or a fixed point.
+But still, \textsc{Iclingo} (the itiratif version of Clingo) will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate or it should terminat as unsatifaible.
+To our knowledge, there is still no possibility to force the incrementation to stop in \textsc{Iclingo}.
 It is still possible, however, to limit the number of iterations to an arbitrary
-maximum which will be eventually reached in such case. %in the case of %an endless loop.
-This is possible with the option "\texttt{-{}-imax=n}'' of \textsc{iClingo},
+maximum which will be eventually reached in such case.
+This is possible with cixing the maximum number of steps "\texttt{\#const imax = n.}'' of \textsc{iClingo},
 where \texttt{n} is the maximum number of steps.
-%%
-%\begin{lstlisting}[numbers=none]
-%iclingo find\_path.lp <network\_name>.lp -- imax=n
-%\end{lstlisting}
-%%
 
 Several values can be given to this parameter \texttt{n}.
 For example, the total number of states is an obvious maximum,
@@ -212,12 +211,10 @@ The total number of sorts is a more interesting value,
 under the hypothesis that each one will change its active process at most once,
 which is often the case for Boolean networks;
 or, with a similar reasoning, the total number of processes can be chosen.
-In these cases, however, a termination with no solution cannot be considered as a formal
-negative answer, unless one can prove that the chosen value \texttt{n}
-is bigger than the longest possible path without loop in the state-transition graph.
+
 Given our implementation, if the step \texttt{n} gives no valid path,
-the computation stops with an \texttt{unsatisfiable} response.
-%and there is no path to be displayed because there is no path which verifies the goals after \texttt{n} changes. Indeed this permits to get a final result, which is \texttt{unsatisfable} property after \texttt{n} steps so with this way we eliminate the unlimitaded execution time.
+the computation stops with an \texttt{unsatisfiable} response for the reachability. If the goals are reachable it is not important to continue the itiration untill reaching "$n$", it will be stopped at this time and the trace of the reachability is returned. Comparing with \textsc{ASP-Thomas} it is not possible because they have to compute all possible dynamic evolution after $n$ steps then verifying the property. 
+
 
 \begin{table}[ht]
 \begin{center}
@@ -246,24 +243,3 @@ the computation stops with an \texttt{unsatisfiable} response.
 \end{table}
 
 
- %Avec ASP-Thomas on doit connaitre apriori la bound du check.
- %Si on peut avoir une bonne aproximation safe de la taille du chemin on a des résultat efficace.
- %Par contre si la bound est incconue, en choissisant une trop petite on peut loupé une reachabilité.
- %Au contraire avec une bound trop grande on va impacter les performances de façon significative.
- %Sur le benchmark <nomdubenchmark> l'objectif est atteint avec un chemin de taille 18.
- %En fixant une bound à 21 on termine en moins d'une seconde. En fixant une bound à 100 on dépasse la minute.
-
-	\textcolor{red}{
-	Table \ref{tab:qualitative_differences} give a summary of the differences between our approach and \textsc{ASP-Thomas}.
-	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
-	If the number of step to reach the goal is part of the goal or if one can know a priori know the length of the path to reach the specified goal,
-	this approach can provide very good performance.
-	But if the bound is totally unknown, choosing a too small path length can lead to missing the goal and thus to conclude unreachable when it is reachable.
-	On the other hand, choosing a to big bound will greatly impact the performance.
-	On ERBB partial, the goal is reachable with a path of 18 steps.
-	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
-	If we fix the bound to 30 it takes several minutes.
-	We can observe similar results on the others benchmarks.
-	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
-	In \textsc{ASP-Thomas}, run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
-	}
