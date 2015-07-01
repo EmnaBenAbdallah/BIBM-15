@@ -227,14 +227,14 @@ the computation stops with an \texttt{unsatisfiable} response.
 \hline
  Reachability & Bounded & {\bf Unbounded} \\
 \hline
- Unreachability & Bounded & Bounded \\
+ Non-reachability & Bounded & Bounded \\
 \hline
  Exploration method & Complete depth first search & {\bf Iterative} Breadth first search \\
 \hline
 \end{tabular}
 \vspace*{4pt}
 \caption{\label{tab:qualitative_differences}
-Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
+Qualitative comparison between our approach and \textsc{ASP-Thomas}.
 }
 \end{center}
 \end{table*}
@@ -248,10 +248,10 @@ Qualitative comparison between our aproach and \textsc{ASP-Thomas}.
 
 	Table \ref{tab:qualitative_differences} give a summary of the differences between our approach and \textsc{ASP-Thomas}.
 	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
-	If the number of step to reach the goal is part of the goal or if one can know apriori know the length of the path to reach the specified goal,
+	If the number of step to reach the goal is part of the goal or if one can know a priori know the length of the path to reach the specified goal,
 	this approach can provide very good performance.
-	But if the bound is totally unknown, choosing a too small path lenght can lead to missing the goal and thus to conclude unreachable when it is reachable.
-	On the other hand, chossing a to big bound will greatly impact the performance.
+	But if the bound is totally unknown, choosing a too small path length can lead to missing the goal and thus to conclude unreachable when it is reachable.
+	On the other hand, choosing a to big bound will greatly impact the performance.
 	On "ERBB partial state", the goal is reachable with a path of 18 steps.
 	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
 	If we fix the bound to 50 it takes several minutes.
