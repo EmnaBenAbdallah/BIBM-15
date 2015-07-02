@@ -129,7 +129,7 @@ keepspaces=true
 % for over three affiliations, or if they all won't fit within the width
 % of the page, use this alternative format:
 % 
-\author{\IEEEauthorblockN{Emna Ben Abdallah\IEEEauthorrefmark{1}, Maxime Folschette\IEEEauthorrefmark{2}, Olivier Roux\IEEEauthorrefmark{1} and Morgan Magnin\IEEEauthorrefmark{3} }
+\author{\IEEEauthorblockN{Emna Ben Abdallah\IEEEauthorrefmark{1}, Maxime Folschette\IEEEauthorrefmark{2}, Olivier Roux\IEEEauthorrefmark{1} and Morgan Magnin\IEEEauthorrefmark{1}\IEEEauthorrefmark{3} }
 
 \IEEEauthorblockA{\IEEEauthorrefmark{1}LUNAM Universit\'e, \'Ecole Centrale de Nantes, IRCCyN UMR CNRS 6597\\
 (Institut de Recherche en Communications et Cybern\'etique de Nantes), 1 rue de la No\"e, 44321 Nantes, France.\\ 
@@ -156,9 +156,10 @@ Email: maxime.folschette@uni-kassel.de}
 
 
 \begin{abstract}
-The regulation of gene expression is achieved through genetic regulatory networks structured by systems of interactions between cells, DNA, RNA and proteins. As most genetic regulatory networks of interest involve many components connected through positive and negative reactions, an intuitive understanding of their dynamics is hard to obtain. As a consequence, formal methods and computer tools for the modeling and simulation of genetic regulatory networks are indispensable. The complexity of Biological Regulatory Networks (BRNs) often defies the intuition of the biologist and calls for the development of proper mathematical methods to model their structures and to delineate their dynamical properties.  Our new formalism the Process Hitting (PH) defined as a restriction of synchronous automata networks is notably suitable. Also it is not limited, to model and analyze efficiently BRNs.
-In this paper, we propose a new logical approach to perform model-checking of dynamical properties of biological regulatory networks modeled in PH. 
-Our work here focuses on state reachability properties on the one hand and on the identification of fixed points on the other hand. The originality of our model-checking approach relies in the exhaustive enumeration of all possible solutions of a simulation as well as of a dynamical property.
+The regulation of gene expression is achieved through genetic regulatory networks structured by systems of interactions between cells, DNA, RNA and proteins. As most genetic regulatory networks of interest involve many components connected through positive and negative reactions, an intuitive understanding of their dynamics is hard to obtain. As a consequence, formal methods and computer tools for the modeling and simulation of genetic regulatory networks are indispensable. The complexity of Biological Regulatory Networks (BRNs) often defies the intuition of the biologist and calls for the development of proper mathematical methods to model their structures and to delineate their dynamical properties.
+Our recently introduced formalism, the Process Hitting (PH), defined as a restriction of synchronous automata networks is notably suitable to such study. Furthermore, it is not limited to model and analyze BRNs.
+In this paper, we propose a new logical approach to perform model-checking of dynamical properties of BRNs modeled in PH.
+Our work here focuses on state reachability properties on the one hand, and on the identification of fixed points on the other hand. The originality of our model-checking approach relies in the exhaustive enumeration of all possible solutions of a simulation as well as of a dynamical property.
 The merits of our methods is illustrated by applying them to biological examples of various sizes and comparing the results with some existing approaches.
 It turns out that our approach succeeds in processing large models with a high number of components and interactions.
 

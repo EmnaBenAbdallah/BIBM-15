@@ -5,15 +5,15 @@ A fixed point is a state of the BRN in which it is not possible to have any new 
 in other words, it is a basin of attraction that is composed of only one state.
 
 In the following, we consider a Process Hitting $\PH = (\Sigma, \PHl, \PHh)$.
-A state $s \in L$ is a fixed point (or stable state) of the Process Hitting model if and only if it has no successor state, \ie regarding the active processes in $s$ there is no playable action.
+A state $s \in L$ is a fixed point (or stable state) of the Process Hitting model if and only if it has no successor state, \ie regarding the active processes in $s$ there is no playable action (see \pref{def:fixpoint}).
 Therefore, it has been shown~\cite{PMR10-TCSB} that
 a stable state in a Process Hitting network is a state so that
 every active process does not hit or is not hit by another process in the same state.
-We note that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
+We note especially that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
 
 \subsection{Process Hitting translation in ASP}
 Before analyzing the dynamics of the network,
-we first need to translate the concerned PH network into ASP \footnote{All programs, including this translation and the methods described in the following, are available online at: \url{https://github.com/EmnaBenAbdallah/verification-of-dynamical-properties_PH}}.
+we first need to translate the concerned PH network into ASP\footnote{All programs, including this translation and the methods described in the following, are available online at: \url{https://github.com/EmnaBenAbdallah/verification-of-dynamical-properties_PH}}.
 To do this we use the following self-describing predicates:
 \texttt{sort} to define sorts, \texttt{process} for the processes and \texttt{action} for the network actions.
 \pref{ex:asp-ph} shows how a PH network is defined with these predicates.

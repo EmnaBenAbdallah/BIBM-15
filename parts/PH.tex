@@ -25,7 +25,10 @@ changes the local state of exactly one automaton,
 and is triggered by the local states of at most two distinct automata.
 This restriction in the form of the actions was chosen to permit
 the development of efficient static analysis methods
-based on abstract interpretation~\cite{PMR12-MSCS} as well as the dynamic analysis that we present in this paper. In addition due to this restriction we need to add non biological components into the system that allow to present the cooperation between $2$ or more components which we call \emph{cooperative sorts}. So it maintains the effectiveness of the static and dynamic analysis.
+based on abstract interpretation~\cite{PMR12-MSCS}
+We also use this particular form the dynamical analyses that we present in this paper.
+However, despite to this restriction, we can add non-biological components into the system, that we call \emph{cooperative sorts} and that allow to model the cooperation between 2 or more components. This allows to partly palliate the reduced expressivity of the PH framework.
+%So it maintains the effectiveness of the static and dynamic analysis.
 
 \begin{definition}[Process Hitting]\label{def:PH}
   A \emph{Process Hitting} is a triple $(\PHs,\PHl,\PHa)$ where:
@@ -43,12 +46,13 @@ based on abstract interpretation~\cite{PMR12-MSCS} as well as the dynamic analys
 
 \begin{example}
 
+\pref{fig:ph} represents a PH with four sorts: $a$, $b$, $z$ and the cooperative sort $ab$.
+
 \tikzstyle{prio}=[draw,thick,-stealth]
 
 \begin{figure}[ht]
-\pref{fig:ph} represents a PH $(\PHs,\PHl,\PHa)$ with four sorts
   \centering
-  \scalebox{1.4}{
+  \scalebox{1.3}{
   \begin{tikzpicture}
     \TSort{(0,0)}{a}{2}{b}
     \TSort{(0,4)}{b}{2}{t}
@@ -98,17 +102,16 @@ based on abstract interpretation~\cite{PMR12-MSCS} as well as the dynamic analys
   \end{tikzpicture}
   }
   \caption{\label{fig:ph}
-A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (network components), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$ is either at level 0 or 1, $b$ at either level 0 or 1, $z$ at either level 0, 1 or 2 and the cooperative sort $ab$ has 4 levels corresponding to the combinaison of the levels of the corresponding sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
+A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (biological components), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$, $b$ and $z$ are all either at level $0$ or $1$, and the cooperative sort $ab$ has 4 levels corresponding to the combination of the levels of sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
   }
 \end{figure}
 
-
 \end{example}
 
-A state of the networks is a set of active processes containing a single process of each sort.
+A state of the network is a set of active processes containing a single process of each sort.
 The active process of a given sort $a \in \PHs$ in a state $s \in \PHl$
 is noted $\PHget{s}{a}$.
-For any given process $a_i$ we also note: $a_i \in s$ if and only if $\PHget{s}{a} = a_i$. It means that the component, or the \emph{sort}, $a$ is at level $i$ during the state $s$.
+For any given process $a_i$ we also note: $a_i \in s$ if and only if $\PHget{s}{a} = a_i$. It means that the biological component $a$ is in the condition labeled $i$ within state $s$.
 
 \begin{definition} [Playable action]
 \label{def:playableAction}
@@ -124,24 +127,27 @@ $\forall c \in \PHs, c \neq b \Rightarrow \PHget{(s \play h)}{c}=\PHget{s}{c}$.
 \end{definition}
 
 PH was chosen for several reasons. It is a general framework that was mainly used for biological networks. Besides, it allows to represent any kind of dynamical model,
-and converters to several other representations are available and included into \textsc{Pint}\footnote{\textsc{Pint} version 2015-11-14: \url{http://loicpauleve.name/pint/}}~\cite{PMR12-MSCS}. Espacially for the particular form of the actions in a PH model allows
+and converters to several other representations are available and included into \textsc{Pint}\footnote{\textsc{Pint} is available at \url{http://loicpauleve.name/pint/}; version 2015-11-14 was used for this work.}~\cite{PMR12-MSCS}.
+Indeed, the the particular form of the actions of the PH allows
 to easily represent them using the Answer Set Programming \cite{Baral03, Vladimir, Glimpse, sureshkumar2006ansprolog},
-with one fact per action. We note that although an efficient dynamical analysis already exists for this framework,
-based on an approximation of the dynamics,
+with one fact per action.
+We note that although an efficient dynamical analysis already exists for this framework,
+provided with \textsc{Pint} and based on an approximation of the dynamics,
 it is interesting to identify its limits
 and compare them to the exhaustive approach we present in this paper.
 
 \subsection{Dynamical properties}
 
 The study of the dynamics of biological networks was the focus of many works, explaining the diversity of network modelings and the different methods developed in order to check dynamic properties.
-In this paper we focus on 2 main properties: the stable states and the reachability.
+In this paper we focus on two main properties of a PH model: the stable states and the reachability.
 In the following, we consider a PH model $(\PHs,\PHl,\PHa)$,
-and we formally define these properties
-and explain how they could be verified on such a network.
+and we formally define these properties.
+How to verify them on a networks with ASP is the subject of the rest of this paper.
+%and explain how they could be verified on such a network.
 
-The notion of \emph{fixed point}, also called \emph{stable state},
-is given in \pref{def:fixpoint}.
-A fixed point is a state which has no successor.
+A \emph{fixed point}, also called \emph{stable state},
+is a state which has no successor,
+as given in \pref{def:fixpoint}.
 Such states have a particular interest as they denote states in which the model
 stays indefinitely,
 and the existence of several of these states denotes a switch in the dynamics~\cite{wuensche1998genomic}.
@@ -151,23 +157,23 @@ and the existence of several of these states denotes a switch in the dynamics~\c
   A state $s \in \PHl$ is called a \emph{fixed point}
   (or equivalently \emph{stable state})
   if and only if it has no successors.
-  In other words, and in $PH$ symantic, $s$ is a fixed point if and only if no action is playable in this state:
+  In other words, $s$ is a fixed point if and only if no action is playable in this state:
   \[\forall \PHfrappe{a_i}{b_j}{b_k} \in \PHa, a_i \notin s \vee b_j \notin s \enspace.\]
 \end{definition}
 
 A finer and more interesting dynamical property consists in
 the notion of \emph{reachability}.
-Such a property, defined in \pref{def:reachability},
+Such a property, formally expressed in \pref{def:reachability},
 states that starting from a given initial state, it is possible
 to reach a given goal, that is, a state that contains a process
 or a set of processes.
 Checking such a dynamical property is considered difficult
-as in usual model-checking techniques,
+as, in usual model-checking techniques,
 it is required to build (a part of) the state graph,
 which has an exponential complexity.
 
 In the following, if $s \in \PHl$ is a state,
-we call \emph{scenario in $s$}
+we call \emph{scenario in~$s$}
 any sequence of actions that are successively playable in $s$.
 We also note $\Sce(s)$ the set of all scenarios in $s$.
 Moreover, we denote by $\Proc = \bigcup_{a \in \PHs} \PHl_a$
@@ -181,5 +187,7 @@ the set of all process in $\PH$.
     \enspace.\]
 \end{definition}
 
-The rest of the paper focuses on the resolution of the previous issues. We demonstrate our algorithms about: the simulation of a biological regulatory network modeled in PH,
-the enumeration of all fixed points (\pref{sec:fixpoint}) and the verification of the reachability property will be handled in \pref{sec:dynamics}. Finally we comare our results to other existing methods and we give our strengths as well as our limits.
+The rest of the paper focuses on the resolution of the previous issues. We show algorithms about
+the enumeration of all fixed points (\pref{sec:fixpoint}) and the verification of a reachability property (\pref{sec:dynamics}).
+This last approach also requires tackle the simulation of a PH model, that is, the enumeration of all reachable states.
+Finally we compare our results to other existing methods and we give their respective strengths and limits.
