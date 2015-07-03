@@ -28,67 +28,73 @@ sort(X) :- process(X,_). %\label{ASPsort}
 action("a",0,"b",0,1). action("b",1,"b",1,0). %\label{actions1}
 action("b",0,"ab",1,0). action("b",0,"ab",3,2). %\label{actions2}
 action("b",1,"ab",0,1). action("b",0,"ab",2,3). %\label{actions3}
-action("a",0,"ab",2,0). action("a",0,"ab",2,1). %\label{actions4}
+action("a",0,"ab",2,0). action("a",0,"ab",3,1). %\label{actions4}
 action("a",1,"ab",0,2). action("a",1,"ab",1,3). %\label{actions5}
 action("ab",3,"z",0,1). %\label{actions6}
 \end{lstlisting}
-In lines \ref{ASPprocess1}-\ref{ASPprocess2} we create the list of processes (expression level) corresponding to each sort,
-for example the sort \texttt{"a"} has 2 processes numbered from \texttt{0} to \texttt{1};
+In \refll{ASPprocess1}{ASPprocess2} we create the list of processes (expression level) corresponding to each sort,
+for example the sort ``\texttt{a}'' has 2 processes numbered \texttt{0} and \texttt{1};
 this predicate will in fact expand into the two following predicates:
 \begin{lstlisting}[numbers=none]
 process("a", 0). process("a", 1).
 \end{lstlisting}
-The sort \texttt{"ab"} is a cooperative sort that does not represent any biological component but only a cooperation between biological components \texttt{"a"} and \texttt{"b"}. In some semantic it is also called a multiplex. Indeed the sort \texttt{"ab"} has $4$ processes represent all possible combinations between the expression levels of the sorts \texttt{"a"} and \texttt{"b"} ($4=2*2$).
-Line \ref{ASPsort} enumerates every sort of the network from the previous information.
-In ASP the underscore is a placeholder for any value.
-Finally, all the actions of the network are defined in lines \ref{actions1}-\ref{actions6};
-We can explain the first predicate \texttt{action("a",0,"b",0,1)} represents the action
+The processes of the cooperative sort ``\texttt{ab}'',
+which represents a cooperation between the biological components ``\texttt{a}'' and ``\texttt{b}'',
+have been relabeled \texttt{0}, \texttt{1}, \texttt{2} and \texttt{3}.
+\Refl{ASPsort} enumerates every sort of the network from the previous information.
+In ASP, a word starting with a capital letter is a variable,
+and the underscore (``\texttt{\_}'') is a placeholder for any value.
+Finally, all the actions of the network are defined straightforwardly in \refll{actions1}{actions6};
+for instance, the predicate \texttt{action("a",0,"b",0,1)} represents the action
 $\PHfrappe{a_0}{b_0}{b_1}$.
 \end{example}
 
 \subsection{Search of fixed points}
 
-The enumeration of fixed points requires to translate the definition of a stable state (\pref{def:fixpoint})
+The enumeration of fixed points requires to translate the definition of a stable state (see \pref{def:fixpoint})
 into an ASP program.
 The first step consists of eliminating all processes involved in a self-hit;
-the other processes are recorded by the predicate \texttt{shownProcess}.
+the other processes are recorded by the predicate \texttt{shownProcess} (\refll{hiddenProcess}{shownProcess2}).
 \begin{lstlisting}
 hiddenProcess(A,I) :- action(A,I,B,J,K), A=B. %\label{hiddenProcess}
 shownProcess(A,I) :- not hiddenProcess(A,I), %\label{shownProcess1}
                      process(A,I). %\label{shownProcess2}
 \end{lstlisting}
 Then, we have to browse all remaining processes of this graph in order to generate all possible states,
-that is, all possible combinations of processes by choosing only one process from each sort (line \ref{select-processes1}-\ref{select-processes2}). So that lines \ref{hiddenProcess}-\ref{shownProcess2} is an optimization to reduce the number of possible states.
+that is, all possible combinations of processes by choosing only one process from each sort (\refll{select-processes1}{select-processes2}).
+%So that \refll{hiddenProcess}{shownProcess2} is an optimization to reduce the number of possible states.
 \begin{lstlisting}
 1 { selectedProcess(A,I) : shownProcess(A,I) } 1 %\label{select-processes1}
          :- sort(A). %\label{select-processes2}
 \end{lstlisting}
-The previous constraint rule lines \ref{select-processes1}-\ref{select-processes2} creates as many potential answer sets as there are possible states
+The previous cardinality rule creates as many potential answer sets as there are possible states
 to take into account.
-Finally, the last step consists of filtering any state that is not a fixed point,
-or, in other words, eliminating all candidate answer sets in which an action could be played that could envolve the network to another state.
+Finally, the last step consists in filtering out any state that is not a fixed point,
+or, in other words, eliminating all candidate answer sets in which an action could be played (and thus lead the network into another state).
 For this, we use a constraint:
 any solution that satisfy the body of this constraint will be removed from the answer set.
-Regarding our problem, a state is eliminated if there exists an action between two selected processes:
+Regarding our problem, a state is eliminated if there exists an action between two selected processes (\refll{constraintFix1}{constraintFix}).
 \begin{lstlisting}
-:- action(A,I,B,J,_), selectedProcess(A,I),
+:- action(A,I,B,J,_), selectedProcess(A,I), %\label{constraintFix1}
     selectedProcess(B,J), A!=B. %\label{constraintFix}
 \end{lstlisting}
-Finally the \texttt{selectedProcess(A,I)} permits to define the fixed point which is compound by these selected processes:
+In the end, the fixed points of the considered model are exactly the states represented in each remaining answer,
+described by the atoms \texttt{fixProc(A,I)} (\refl{fixproc}).
+% Finally the \texttt{selectedProcess(A,I)} permits to define the fixed point which is compound by these selected processes:
 \begin{lstlisting}
-fixProc(A,I) :- selectedProcess(A,I).
+fixProc(A,I) :- selectedProcess(A,I). %\label{fixproc}
 \end{lstlisting}
 
 \begin{example}[Fixed points enumeration]
 The PH model of \pref{fig:ph} contains 4 sorts:
 $a$, $b$ and $z$ have 2 processes and $ab$ has 4; therefore, the whole model has $2*2*2*4 = 32$ states (whether they can be reached or not from a given initial state).
-We can check that this model contains $2$ fixed points: $\PHstate{b_0, a_1, ab_2, z_0}$ and $\PHstate{b_0, a_1, ab_2, z_1}$
-Indeed, there is no action between each two processes contained in this state so no execution is possible from these states. 
+We can check that this model contains $2$ fixed points: $\PHstate{b_0, a_1, ab_2, z_0}$ and $\PHstate{b_0, a_1, ab_2, z_1}$.
+Indeed, there is no action between each two processes contained in this state so no execution is possible from these.
 In this example, no other states verify this property.
 
-If we execute the ASP program detailed below,
-alongside with the description of the PH model given in \pref{ex:asp-ph},
-we obtain two answer sets, which matches the expected result:
+If we execute the ASP program detailed below (see \refll{hiddenProcess}{constraintFix}),
+alongside with the description of the PH model given in \pref{ex:asp-ph} (see \refll{ASPprocess1}{actions5}),
+we obtain two answer sets that match the expected result:
 \begin{lstlisting}[numbers=none]
 Answer 1 : fixProc(a,1), fixProc(b,0), 
 		fixProc(z,0), fixProc(ab,2)

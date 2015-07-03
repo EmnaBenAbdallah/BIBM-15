@@ -1,15 +1,15 @@
 %Section: Dynamic network evolution
 
-In this section, we present at first how to determine the possible behaviour in a PH model after a finite number of steps with an ASP program.
-Then we tackle the reachability question: are there scenarios from a given initial state
-that allow to reach a given goal? If yes is it possible to display the shortest path?
+In this section, we present at first how to determine the possible behavior of a PH model after a finite number of steps with an ASP program.
+Then we tackle the reachability question: are there scenarios starting from a given initial state
+that allow to reach a given goal? If yes, we wish to obtain a shortest path to reach this goal.
 
 \subsection{Network simulation}
 In the previous section, enumerating the fixed points did not require to
-encode the full dynamics of PH, but only a condition. It is a static verification.
-In this section, we thus implement a dynamic simulation of the PH into ASP. Then it permits to apply an exhaustive analysis to search for the paths allowing to reach the goals.
+encode the full dynamics of PH, but only a condition, as it was a static verification.
+In this section, we need to implement a dynamic simulation of the PH into ASP, in order to apply an exhaustive analysis to search for the paths allowing to reach the goal.
 
-Firstly, we focus on the simulation, evolution of models in a limited number of steps.
+Firstly, we focus on the simulation, that is, the evolution of a model in a limited number of steps.
 We therefore define the predicate \texttt{time(0..n)} which sets the number of steps we want to play.
 The value of \texttt{n} can be arbitrarily chosen;
 for example, \texttt{time(0..10)} will compute the 11 first steps,
@@ -17,29 +17,28 @@ including the initial state.
 In order to specify such an initial state, we add several facts
 to make a list of all processes included in this state:
 \begin{lstlisting}
-init(activeProcess("a",0)). 
+init(activeProcess("a",0)).
 init(activeProcess("b",0)).
 init(activeProcess("ab",0)).
 init(activeProcess("z",0)).
 \end{lstlisting}
-where \texttt{"a"} is the name of the sort and \texttt{"0"} the index of the active process.
+where ``\texttt{a}'' is the name of the sort and ``\texttt{0}'' the index of the active process.
 The dynamics of a network is described by its actions;
 therefore, identifying the future states requires to first identify the playable actions for each state.
 We remind that an action is playable in a state when both its hitter process and target process are active in this state (see \pref{def:playableAction}).
-Therefore, we define an ASP predicate \texttt{playable(action(A,I,B,J,K),T)} that is true
+Therefore, we define an ASP predicate \texttt{playable(action(A,I,B,J,K),T)} which is true
 when the processes $\texttt{A}_\texttt{I}$ and $\texttt{B}_\texttt{J}$ are active at step \texttt{T}.
 
-The cardinality rule of lines \ref{e2a}
+The cardinality rule of \refl{e2a}
 creates a set of as many predicates as there are possible evolutions from the current step,
-thus reproducing all possible branchings in the possible evolutions of the model in the form of as many potential answer sets. It is also needed to enforce the strictly asynchronous dynamic
+thus reproducing all possible branchings in the possible evolutions of the model, in the form of as many potential answer sets. It is also needed to enforce the strictly asynchronous dynamic
 which state that exactly one process can change between two steps.
-We thus represent the change of the active process of a sort
-by the predicate \texttt{change(B,T+1)}
-which means that in sort \texttt{B}, the active process can change between steps \texttt{T} and \texttt{T+1}.
 To remove all scenarios where two or more actions have been played between
-two steps, we use the constraint of line \ref{e2}.
+two steps, we use the constraint of \refl{e2}.
 Thus, the remaining scenarios contained in the answer sets all strictly follow
 the asynchronous dynamics of the PH.
+We finally witness that sort ``\texttt{B}'' has been changed between steps ``\texttt{T}'' and ``\texttt{T+1}'' with the predicate \texttt{change(B,T+1)} of \refl{e3}.
+%which means that in sort \texttt{B}, the active process can change between steps \texttt{T} and \texttt{T+1}.
 
 \begin{lstlisting}
 0{play(Action,T)}1 :- playable(Action,T), time(T). %\label{e2a} 
@@ -48,8 +47,8 @@ change(B,T+1) :- play(action(_,_,B,_,_),T),time(T). %\label{e3}
 \end{lstlisting}
 
 Finally, the active processes at step \texttt{T+1},
-that represent the next network state depending on the chosen bounce,
-can be computed by the following rules:
+thus representing the next state in the dynamics, depending on the chosen bounce,
+can be computed by the rules of \refll{e4}{e5a}.
 \begin{lstlisting}
 instate(activeProcess(B,K),T+1) :-  %\label{e4}
 	play(action(_,_,B,_,K),T), time(T). %\label{e4a}
@@ -57,9 +56,9 @@ instate(activeProcess(B,K),T+1) :-  %\label{e5}
 	not change(B,T+1),
 	instate(activeProcess(B,K),T), time(T). %\label{e5a}
 \end{lstlisting}
-In other words, the state of step \texttt{T+1} contains one new active process $\texttt{B}_\texttt{K}$
-resulting from the predicate \texttt{play(action(\_,\_,B,\_,K),T)} (lines \ref{e4}-\ref{e4a})
-as well as all the unchanged processes that correspond to the other sorts (lines \ref{e5}-\ref{e5a}).
+In other words, the state of step \texttt{T+1} contains one updated active process $\texttt{B}_\texttt{K}$
+resulting from the predicate \texttt{play(action(\_,\_,B,\_,K),T)} (\refll{e4}{e4a})
+as well as all the unchanged processes that correspond to the other sorts (\refll{e5}{e5a}).
 
 The overall result of the pieces of program presented in this subsection
 is an answer set containing one answer for each
@@ -67,59 +66,63 @@ possible evolution in \texttt{n} time steps,
 starting from a given initial state.
 
 \subsection{Reachability verification}
-In this section, we focus on the reachability of a set of processes which corresponds to the reachability property (see \pref{def:reachability}):
-``Is it possible, starting from a given initial state, to play a number of actions so that a set of given processes are active in the resulting state?''
-We now want to use the implementation of the dynamics computation of the previous section in order to solve this reachability problem.
-For this, we first use a predicate \texttt{goal} to list the processes we want to reach and we add as many rules of the following form as there are objective processes:
+In this section, we focus on the reachability of a set of processes which corresponds to the following reachability property (see \pref{def:reachability}):
+``Is it possible, starting from a given initial state, to play a certain number of actions so that a set of given processes are active in the resulting state?''
+In the following, we use the implementation computing the dynamics given in the previous section, in order to solve this reachability problem.
+For this, we first use a predicate \texttt{goal} to list the processes we want to reach (\refl{c1}) and we add as many rules of this kind as there are objective processes.
 \begin{lstlisting}
 goal(activeProcess("z",1)). %\label{c1}
 \end{lstlisting}
-Then, the literal \texttt{reached(F, T)} 
-checks if a given active process \texttt{F} of the goal
-is contained in the state of step \texttt{T},
-as defined in the rule of line \ref{c2}.
-Else the answer will be eliminated by a constraint (not detailed here) which verifies if all processes of the goal are satisfied.
+The literal \texttt{reached(F, T)} then
+checks if a given active process ``\texttt{F}'' of the goal
+is contained in the state of step \texttt{T} (\refl{c2}).
+Otherwise, the current answer will be eliminated by a constraint (not detailed here) which verifies that all processes of the goal are satisfied.
 \begin{lstlisting}
 reached(F, T) :-  goal(F), instate(F, T). %\label{c2}
 \end{lstlisting}
 
+% \texttt{\#program base}
+% \texttt{\#program step(t).}
+% \texttt{\#program check(t).}
+
 However, the limitation of the method above is that the user has to decide upstream
 the number of computed steps that should be sufficient to reach all the goals.
-It is a main disadvantage like in \cite{roccaasp} because a search in $N$ steps will find no solution
+It is a main disadvantage shared for instance by the method proposed in~\cite{roccaasp} because a search in $N$ steps will find no solution
 if the shortest path to the goal requires $K$ steps with $K > N$.
 It may also needlessly lengthen the resolution if the shortest path requires $n$ steps with $n << N$.
 One solution is then to use an incremental computation mode,
 which is especially tackled by the incremental solver of \textsc{Clingo}~\cite{gebser2008user}.
 The corresponding syntax separates the program in 3 parts.
-The \texttt{\#program base} part contains only non-incremental elements
+The \texttt{base} part contains only non-incremental elements
 and is thus used to declare general rules
 that do not depend on the time steps (such as the data related to the model).
 The body iteration is then written in the
-\texttt{\#program step(t).} and \texttt{\#program check(t).} parts,
-which are computed at each incremental step. The step number is not given by a variable but by a constant placeholder called "\texttt{t}'' in the following.
+\texttt{step(t)} and \texttt{check(t)} parts,
+which are computed at each incremental step. The step number is not given by a variable but by a constant placeholder called ``\texttt{t}'' in the following.
 The first part comprises rules depending on the time step,
-and the second contains constraints that stops the iteration when needed.
+and the second contains constraints that stop the iteration when needed.
 
 When using this new syntax, the obtained program is almost identical
 to what was presented before,
 except that step numbers \texttt{T}
 are replaced by the constant placeholder \texttt{t}.
-In each step \texttt{t}, the program computes: \\
-  - the playable actions 
-   \texttt{playable(Action,t)}, \\
-   - the choosen action to be played \texttt{play(Action,t)},
-  - the possible bounces \texttt{change(B,t)} \\
-  - the new states \texttt{instate(activeProcess(A,I),t+1)}\\
-
-in the \texttt{\#program step(t).} part
-the same way than previously, but only for the current step.
+In each step \texttt{t}, the program computes:
+\begin{itemize}\renewcommand{\labelitemi}{--}
+  \item the playable actions: \texttt{playable(Action,t)},
+  \item the chosen action to be played: \texttt{play(Action,t)},
+  \item the possible bounces: \texttt{change(B,t)},
+  \item the new state: \texttt{instate(activeProcess(A,I),t+1)}
+\end{itemize}
+in the \texttt{step(t)} part
+the same way than previously,
+but they are only computed for the current step.
 The solver then compares its current answer sets with
-the \texttt{t}-dependent constraint given in the \texttt{\#program check(t).} part.
-Regarding our implementation, this constraint is given in line \ref{c4}
+the \texttt{t}-dependent constraint given in the \texttt{check(t)} part.
+Regarding our implementation, this constraint is given in \refll{c3}{c4}
 and simply states that all goals have to be met.
 If this constraint invalidates all current answer sets,
 the computation continues in the next iteration in order to reach a valid answer set.
-As soon as some answer sets meet the constraints,
+As soon as one or more answer sets meet the constraint,
 they are returned and the computation stops.
 \begin{lstlisting}
 notReached(t) :- goal(F), not instate(F,t). %\label{c3}

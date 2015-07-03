@@ -6,16 +6,18 @@ All computations (except the one called \textsc{ASP-Thomas}) were performed on a
 To assess the efficiency of our new approach,
 we position ourselves with respect to existing methods dealing with different biological models.
 We have chosen the following tools, that are detailed below: 
-\textsc{GINsim}\footnote{\textsc{GINsim} version 2.4 alpha: \url{http://ginsim.org/}} (Gene Interaction Network Simulation)~\cite{gonzalez2006ginsim,naldi2009logical,naldi2007decision},
+\textsc{GINsim}\footnote{\textsc{GINsim} version 2.4 alpha: \url{http://ginsim.org/}} (Gene Interaction Network Simulation)~\cite{gonzalez2006ginsim,naldi2009logical,naldi2007decision};
 \textsc{LibDDD}\footnote{\textsc{LibDDD} version 1.8: \url{http://move.lip6.fr/software/DDD/}}
-(Library of Data Decision Diagrams)~\cite{thierry2009hierarchical,colange2013towards},
-\textsc{Pint}\footnote{\textsc{Pint} version 2015-11-14: \url{http://loicpauleve.name/pint/}}~\cite{PMR12-MSCS}
-and the method for CTL model-checking proposed by Rocca \textit{et al.} in~\cite{roccaasp},
-which was developed also in ASP but for states transitions networks.
+(Library of Data Decision Diagrams)~\cite{thierry2009hierarchical,colange2013towards};
+\textsc{Pint}\footnote{\textsc{Pint} version 2015-11-14: \url{http://loicpauleve.name/pint/}}~\cite{PMR12-MSCS};
+and a method for CTL model-checking proposed by Rocca \textit{et al.} in~\cite{roccaasp}
+which was also developed in ASP.
+%but for states transitions networks.
 Each method uses a specific kind of representation\footnote{When available, we used the converters included into \textsc{Pint} for these translations.}:
-Thomas models (a particular kind of logical regulatory networks) for \textsc{GINsim},
+Thomas models (a particular kind of logical regulatory networks) for \textsc{GINsim}
+and the method of Rocca \textit{et al.},
 instantiable transition systems for \textsc{LibDDD},
-state transition networks for the method of Rocca \textit{et al.}
+%state transition networks for the method of Rocca \textit{et al.}
 and Process Hitting (PH) for \textsc{Pint} as well as for our method.
 
 For this comparative study, we focus on biological network of different sizes:
@@ -28,10 +30,11 @@ We note however that the considered PH models may contain more sorts than
 the original number of biological components, due to the use of
 "cooperative sorts'', which allow to model Boolean gates but do not necessarily
 have a biological meaning.
-The different model representations that are required for performing these benchmarks have been obtained by translations
+The different model representations that are required to perform these benchmarks have been obtained by translations
 from the PH
 ensuring the conservation of the dynamical properties.
-The specification of the models and the results of our stable state enumeration
+
+The specification of the models and the results of our enumeration of the fixed points
 are summed up in \pref{tab:models}.
 The time performance is roughly the same than the SAT implementation
 that comes with \textsc{Pint}.
@@ -45,7 +48,7 @@ furthermore, it sometimes provides more information than the other existing ones
 \begin{table*}[ht]
 \begin{center}
 \noindent%
-\begin{tabular}{|l|c||c|c|c||c|c|}
+\begin{tabular}{|l|c||c|c|c||>{\columncolor{verylightgray}}c|>{\columncolor{verylightgray}}c|}
 \hline
   \multicolumn{2}{|c||}{Models} & \multicolumn{3}{c||}{PH representation} & \multicolumn{2}{c|}{Fixed points enumeration} \\
 \hline
@@ -79,7 +82,7 @@ and the number of results returned.
 \begin{table*}[ht]
 \begin{center}
 \noindent%
-\begin{tabular}{|l|l|c||c|c|c|c|c|}
+\begin{tabular}{|l|l|c||c|c|c|>{\columncolor{verylightgray}}c|}
 \hline
   \multicolumn{3}{|c||}{Experiments} & \multicolumn{4}{c|}{Results} \\
 \hline
@@ -90,11 +93,11 @@ and the number of results returned.
 \hline
   \#2 & ERBB & full state & out &1m55.38s & 2m31.64s & 0m11.84s \\
 \hline
-  \#3 & ERBB & partial state  & 0m0.03s &1m54.96s & - & 0m5.02s \\
+  \#3 & ERBB & partial state  & 0m0.03s &1m54.96s & -- & 0m5.02s \\
 \hline
   \#4 & TCR & full state & Inconc & out & out & 6m27.93s \\
 \hline
-  \#5 & TCR & partial state & 0m0.02s & out & - & 1m35.08s \\
+  \#5 & TCR & partial state & 0m0.02s & out & -- & 1m35.08s \\
 \hline
 \end{tabular}
 \vspace*{4pt}
@@ -105,9 +108,9 @@ For each test, this table gives the short name of the considered model,
 as given in table~\ref{tab:models},
 the type of goal (either a whole state or a sub-state)
 and the computation time of the different methods used for the tests,
-where “out” marks an execution taking too much time or memory,
-\mbox{“~-~”} indicates that is not possible to do the test,
-and “Inconc” states that the method terminates without a response.
+where ``out'' marks an execution taking too much time or memory,
+``\mbox{--}'' indicates that is not possible to do the test,
+and ``Inconc'' states that the method terminates without a response.
 }
 \end{center}
 \end{table*}
@@ -121,8 +124,8 @@ and “Inconc” states that the method terminates without a response.
 
 \item \textbf{\textsc{GINsim}} is a software for the edition, simulation and analysis
 of gene interaction networks.
-It allows to compute all reachable stable states from a given initial state instantly;
-however, it is not possible to compute all stable states independently from the initial state.
+It allows to compute all reachable fixed points from a given initial state instantly;
+however, it is not possible to compute all fixed points independently from the initial state.
 Regarding the reachability problem, \textsc{GINsim} only allows to check the reachability of
 full states, because its approach consists in computing
 (part of) the state-transition graph and then searching for a path between the two given states.
@@ -141,7 +144,7 @@ This computation explains why \textsc{LibDDD} takes more time to respond,
 and gets out of memory in about 12 minutes for the biggest example
 which contains $2^{73}$ states
 (experiments \#4 \& \#5).
-Finally, \textsc{LibDDD} is not able to compute the stable states of a network.
+Finally, \textsc{LibDDD} is not able to compute the fixed points of a network.
 
 \item \textbf{\textsc{Pint}}
 is a library gathering tools and converters related to the PH.
@@ -156,7 +159,7 @@ which are more likely to trigger an inconclusive response
 (such as for experiment \#4),
 or an exponential research in sub-solutions
 (such as for experiment \#2).
-This explains the high computation times for some tests in \pref{tab:reachability}.
+This explains the high computation times for some of the tests.
 Moreover, in the case of a positive answer,
 it currently does not return the execution of the path achieving the desired reachability,
 but only outputs its conclusion (True, False or Inconclusive).
@@ -164,23 +167,25 @@ but only outputs its conclusion (True, False or Inconclusive).
 \item \textbf{\textsc{ASP-Thomas}}\footnote{The authors wish to thank Laurent Trilling for his help to perform the tests.}
 offers the possibility to model-check CTL properties of Thomas networks. 
 There is however no automatic way that allows the modeling of Thomas networks in ASP, which currently has to be made by hand and requires labeling. As for our method, we use the PH whose actions are easily represented in ASP with one fact per action.
-In addition, the method "\textsc{ASP-Thomas}'' requires to provide a maximum number of steps
-for which the dynamics will be computed, which may be difficult to be predicted. Also all dynamics of the system have to be computed untill $n$ steps so that they do a depth first verification. Comparing with our method that is not obligatory to reach the $n_{th}$ step, the program will stop at the first step that reach the goals: breath first search.
+In addition, the method \textsc{ASP-Thomas} requires to provide a maximum number of steps
+for which the dynamics will be computed, which may be difficult to be predicted. Furthermore, all dynamics of the system have to be computed up to $n$ steps in order to perform a depth first verification.
+It is not the case for our method which can stop as soon as the goal is met, and thus potentially before the $n$\textsuperscript{th} step.
+%, the program will stop at the first step that reach the goals: breath first search.
 However it is clear that with a minimal number of steps this approach terminates very quickly when compared with others.
-Indeed it also shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
-The a summary of differences between our approach and \textsc{ASP-Thomas} is detailed in table \ref{tab:qualitative_differences}.
-	The main difference with is that in \textsc{ASP-Thomas} the search is bounded.
-	If the number of step to reach the goal is part of the goal or if one can know a priori know the length of the path to reach the specified goal,
-	this approach can provide very good performance.
-	But if the bound is totally unknown, choosing a too small path length can lead to missing the goal and thus to conclude unreachable when it is reachable.
-	On the other hand, choosing a to big bound will greatly impact the performance.
-	On ERBB partial, the goal is reachable with a path of 18 steps.
-	Using a bound of 21, \textsc{ASP-Thomas} finish in 2.61s.
-	If we fix the bound to 30 it takes several minutes.
-	We can observe similar results on the others benchmarks.
-	With our approach, if the goal is reachable, the run time only depend of the distance to reach the goal.
-	In \textsc{ASP-Thomas}, run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
-	
+It also shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
+The a summary of differences between our approach and \textsc{ASP-Thomas} is detailed in \pref{tab:qualitative_differences}.
+The main difference is that, in \textsc{ASP-Thomas}, the search is bounded.
+If the number of steps to reach the goal is part of the goal or if one can a priori know the length of the path to reach the specified goal,
+this approach can provide very good performance.
+But if the bound is totally unknown, choosing a too small path length can naturally lead to miss the goal.
+%and thus to conclude it is unreachable when it is reachable.
+On the other hand, choosing a bound that is too big will greatly impact the performance.
+For example, in experiment \#3, the goal is reachable with a path of 18 steps,
+and using a bound of 21, \textsc{ASP-Thomas} finishes in 2.61s.
+However, if we fix the bound to 30 steps, it takes several minutes.
+We can observe similar results on the others benchmarks.
+With our approach, if the goal is reachable, the run time only depends on the distance to reach the goal.
+In \textsc{ASP-Thomas}, the run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
 
 \end{itemize}
 
@@ -188,18 +193,20 @@ The a summary of differences between our approach and \textsc{ASP-Thomas} is det
 \label{sec:limitations}
 
 In the previous sections,
-we developed new methods in ASP to check dynamical properties,
-namely identifying stable states and finding all possible paths and the shortest ones to reach a given goal.
-Compared to some other methods describes above
+we developed two new methods in ASP to check dynamical properties,
+namely identifying fixed points and finding all the shortest paths to reach a given goal.
+Compared to some other methods described above
 (\textsc{GINsim} and \textsc{LibDDD}) our method is relatively faster and also permits to study larger networks
-(up to $2^{73}$ states in our tests). We exclusively study networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover it is easy to implement the dynamics of the PH into ASP.
+(up to $2^{73}$ states in our tests). We exclusively studied networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover, the dynamics of PH it is easy to implement into ASP.
 
 In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
-But still, \textsc{Iclingo} (the itiratif version of Clingo) will continue to iterate until the goal is reached, while remaining in the same state, thus it will never terminate or it should terminat as unsatifaible.
-To our knowledge, there is still no possibility to force the incrementation to stop in \textsc{Iclingo}.
+However, the iterative version of \textsc{Clingo} will continue to iterate until the goal is reached,
+even is stuck in a loop, while it should return an \texttt{unsatisfiable} response.
+This is due to the fact that between each step, all information about the previous visited states is lost.
+To our knowledge, there is no possibility yet to force the incrementation to stop in this iterative \textsc{Clingo} version.
 It is still possible, however, to limit the number of iterations to an arbitrary
 maximum which will be eventually reached in such case.
-This is possible with cixing the maximum number of steps "\texttt{\#const imax = n.}'' of \textsc{iClingo},
+This is possible with the use of a construct limiting the maximum number of steps: ``\texttt{\#const imax = n.}'',
 where \texttt{n} is the maximum number of steps.
 
 Several values can be given to this parameter \texttt{n}.
@@ -211,9 +218,11 @@ under the hypothesis that each one will change its active process at most once,
 which is often the case for Boolean networks;
 or, with a similar reasoning, the total number of processes can be chosen.
 
-Given our implementation, if the step \texttt{n} gives no valid path,
-the computation stops with an \texttt{unsatisfiable} response for the reachability. If the goals are reachable it is not important to continue the itiration untill reaching "$n$", it will be stopped at this time and the trace of the reachability is returned. Comparing with \textsc{ASP-Thomas} it is not possible because they have to compute all possible dynamic evolution after $n$ steps then verifying the property. 
-
+Given our implementation, if the step \texttt{n} is reached (meaning no valid path was found),
+the computation stops with an \texttt{unsatisfiable} response for the reachability.
+However, if the goal is reached at some intermediary step, it is not necessary to continue the iteration up to ``\texttt{n}''.
+Instead, the computation is stopped and the current trace of the reachability is returned.
+In comparison, \textsc{ASP-Thomas} has to compute all possible dynamic evolutions of length ``\texttt{n}'' before verifying the property.
 
 \begin{table}[ht]
 \begin{center}
