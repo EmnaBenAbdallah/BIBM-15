@@ -31,7 +31,7 @@ A rule $r$ as given above is \emph{true under~$I$} if and only if:
   \[\{a_1,\ \dots,\ a_{m}\} \subseteq I \wedge \{a_{m+1},\ \ldots,\ a_{n}\} \cap I = \emptyset \Rightarrow a_{0} \in I \enspace.\]
 An interpretation $I$ is a \emph{model} of a program $P$ if each rule $r \in P$ is true under $I$.
 Finally, $I$ is an answer set of $P$ if $I$ is a minimal (in terms of inclusion) model of $P^{I}$,
-where $P^{I}$ is defined as the program that results from $P$ by deleting all rules that contain a negated atom from $I$,
+where $P^{I}$ is defined as the program that results from $P$ by deleting all rules that contain a negated atom that appears in $I$,
 and deleting all negated atoms from the remaining rules.
 Programs can yield no answer set, one answer set, or many answer sets.
 To compute answer sets of an answer set program, one needs a grounder (to remove variables from the rules) and a solver.
