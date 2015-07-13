@@ -7,11 +7,11 @@ in other words, it is a basin of attraction that is composed of only one state.
 In the following, we consider a Process Hitting $\PH = (\Sigma, \PHl, \PHh)$.
 A state $s \in L$ is a fixed point (or stable state) of the Process Hitting model if and only if it has no successor state, \ie regarding the active processes in $s$ there is no playable action (see \pref{def:fixpoint}).
 Therefore, it has been shown~\cite{PMR10-TCSB} that
-a stable state in a Process Hitting network is a state so that
+a stable state in a Process Hitting model is a state so that
 every active process does not hit or is not hit by another process in the same state.
 We note especially that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
 
-\subsection{Answer Set Programming}
+\subsection{Answer Set Programming (ASP)}
 
 In this section, we recapitulate the basic elements of ASP \cite{baral2003knowledge, Vladimir, Glimpse}.
 An answer set program is a finite set of rules of the form:
@@ -93,7 +93,7 @@ that is, all possible combinations of processes by choosing only one process fro
 1 { selectedProcess(A,I) : shownProcess(A,I) } 1 %\label{select-processes1}
          :- sort(A). %\label{select-processes2}
 \end{lstlisting}
-The previous cardinality rule creates as many potential answer sets as there are possible states
+The previous cardinality rule creates as many potential answer sets as the number of possible states
 to take into account.
 Finally, the last step consists in filtering out any state that is not a fixed point,
 or, in other words, eliminating all candidate answer sets in which an action could be played (and thus lead the network into another state).
@@ -116,7 +116,7 @@ The PH model of \pref{fig:ph} contains 4 sorts:
 $a$, $b$ and $z$ have 2 processes and $ab$ has 4; therefore, the whole model has $2*2*2*4 = 32$ states (whether they can be reached or not from a given initial state).
 We can check that this model contains $2$ fixed points: $\PHstate{b_0, a_1, ab_2, z_0}$ and $\PHstate{b_0, a_1, ab_2, z_1}$.
 Indeed, there is no action between each two processes contained in this state so no execution is possible from these.
-In this example, no other states verify this property.
+In this example, no other state verifies this property.
 
 If we execute the ASP program detailed below (see \refll{hiddenProcess}{constraintFix}),
 alongside with the description of the PH model given in \pref{ex:asp-ph} (see \refll{ASPprocess1}{actions5}),

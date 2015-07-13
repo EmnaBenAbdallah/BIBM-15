@@ -1,22 +1,7 @@
-In this paper, we gave a new method to compute some dynamical properties
-on Process Hitting models, a subclass of asynchronous automata.
-The main interest of our method is the use of ASP,
-a declarative programming paradigm which benefits from powerful solvers.
-We first focused on the enumeration of the fixed points of a model,
-that is, the states from which no more evolution is possible,
-which is tackled simply on Process Hitting models given their particular form.
-We also considered the reachability problem, that is,
-checking if it is possible to reach a state with a given property
-from a given initial state,
-which thus corresponds to an $\mathsf{EF}$ property in CTL logic.
-Our analysis is exhaustive:
-it computes the dynamics of the model from a given initial state and checks the sought goal;
-this search can also be limited to a given number of steps.
-%for which the dynamics of the model from the given initial state is computed.
-%and can be limited to a number of steps,
+In this paper, we proposed a new logical approach to address dynamical properties of Process Hitting models. The originality of our work consists in using ASP a powerful declarative programming paradigm. Thanks to the encoding we introduced, we are not only able to tackle the enumation of fixed points but also to consider reachability properties. The major benefit of such a method is to get an exhaustive enumeration of all corresponding paths while still being tractable for models with dozens of interacting components.
 
-We gave an implementation of these problems into ASP,
-and applied them to several biological examples of various sizes, up to
+The implementation of these problems was given into ASP,
+and applied to several biological examples of various sizes, up to
 40 biological components.
 The results showed that our implementation is faster and deals with bigger models
 than other classical approaches, especially \textsc{LibDDD} which is a symbolic model-checker.

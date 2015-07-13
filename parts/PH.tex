@@ -102,7 +102,7 @@ However, despite to this restriction, we can add non-biological components into 
   \end{tikzpicture}
   }
   \caption{\label{fig:ph}
-A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (biological components), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$, $b$ and $z$ are all either at level $0$ or $1$, and the cooperative sort $ab$ has 4 levels corresponding to the combination of the levels of sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
+A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (biological components and multiplexes), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$, $b$ and $z$ are all either at level $0$ or $1$, and the cooperative sort $ab$ has 4 levels corresponding to the combination of the levels of sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
   }
 \end{figure}
 
@@ -125,16 +125,6 @@ is denoted by $(s \play h)$,
 where $\PHget{(s \play h)}{b} = b_k$ and
 $\forall c \in \PHs, c \neq b \Rightarrow \PHget{(s \play h)}{c}=\PHget{s}{c}$.
 \end{definition}
-
-PH was chosen for several reasons. It is a general framework that was mainly used for biological networks. Besides, it allows to represent any kind of dynamical model,
-and converters to several other representations are available and included into \textsc{Pint}\footnote{\textsc{Pint} is available at \url{http://loicpauleve.name/pint/}; version 2015-11-14 was used for this work.}~\cite{PMR12-MSCS}.
-Indeed, the the particular form of the actions of the PH allows
-to easily represent them using the Answer Set Programming \cite{Baral03, Vladimir, Glimpse, sureshkumar2006ansprolog},
-with one fact per action.
-We note that although an efficient dynamical analysis already exists for this framework,
-provided with \textsc{Pint} and based on an approximation of the dynamics,
-it is interesting to identify its limits
-and compare them to the exhaustive approach we present in this paper.
 
 \subsection{Dynamical properties}
 
