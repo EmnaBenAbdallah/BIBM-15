@@ -1,6 +1,6 @@
 In this section, we show the effectiveness of our approach on some examples,
 and compare it to other existing approaches.
-All computations (except the one called \textsc{ASP-Thomas}) were performed on a Pentium~V, 3.2~GHz with 4~GB RAM.
+All computations were performed on a Pentium~V, 3.2~GHz with 4~GB RAM.
 
 \subsection{Evaluation}
 To assess the efficiency of our new approach,
@@ -164,7 +164,7 @@ Moreover, in the case of a positive answer,
 it currently does not return the execution of the path achieving the desired reachability,
 but only outputs its conclusion (True, False or Inconclusive).
 
-\item \textbf{\textsc{ASP-Thomas}}\footnote{The authors wish to thank Laurent Trilling for his help to perform the tests.}
+\item \textbf{\textsc{ASP-Thomas}}\footnote{The authors wish to thank Laurent Trilling for his help to perform the tests by translating the used biological networks into Thomas' network and modeling them using ASP. }
 offers the possibility to model-check CTL properties on Thomas networks.
 Currently, the translation of Thomas networks into ASP, including discrete parameters, is hand-made.
 Then, for a given CTL formula also described in ASP, this tool returns the set of paths satisfying the formula.
@@ -258,7 +258,7 @@ Compared to some other methods described above
 (up to $2^{73}$ states in our tests). We exclusively studied networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover, the dynamics of PH it is easy to implement into ASP.
 
 In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
-However, the iterative version of \textsc{Clingo} will continue to iterate even no answer is satisfied by the itirative part of the program. We faced this problem in the solver of \textsc{Clingo}, indeed the it should return an \texttt{unsatisfiable} response instead of iterating in vacuum.
+However, the iterative version of \textsc{Clingo} will continue to iterate even no answer is satisfied by the itirative part of the program. We faced this problem in the solver of \textsc{Clingo}, indeed it should return an \texttt{unsatisfiable} response instead of iterating in vacuum.
 To our knowledge, there is no possibility yet to force the incrementation to stop in this iterative \textsc{Clingo} version without reaching the goals.
 It is still possible, however, to limit the number of iterations to an arbitrary
 maximum which will be eventually reached in such case.
