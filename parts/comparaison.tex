@@ -200,7 +200,7 @@ Compared to some other methods described above
 (up to $2^{73}$ states in our tests). We exclusively studied networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover, the dynamics of PH it is easy to implement into ASP.
 
 In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
-However, the iterative version of \textsc{Clingo} will continue to iterate even no availbale response is satisfied by the itirative part of the program. We faced this problem in the solver of \textsc{Clingo}, indeed the it should return an \texttt{unsatisfiable} response instead of iterating in vacuum.
+However, the iterative version of \textsc{Clingo} will continue to iterate even no answer is satisfied by the itirative part of the program. We faced this problem in the solver of \textsc{Clingo}, indeed the it should return an \texttt{unsatisfiable} response instead of iterating in vacuum.
 To our knowledge, there is no possibility yet to force the incrementation to stop in this iterative \textsc{Clingo} version without reaching the goals.
 It is still possible, however, to limit the number of iterations to an arbitrary
 maximum which will be eventually reached in such case.
