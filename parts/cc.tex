@@ -6,8 +6,11 @@ and applied to several biological examples of various sizes, up to
 The results showed that our implementation is faster and deals with bigger models
 than other classical approaches, especially \textsc{LibDDD} which is a symbolic model-checker.
 
-Our work could benefit from several extensions.
-Of course, the set of applicable models can be extended,
+Our work could benefit from several extensions,
+starting by direct improvements to the developed tool,
+such as removing the final infinite loop in case the goal is not reachable --
+and thus also the need to arbitrarily cap the number of iterations.
+Of course, the set of applicable models can also be extended,
 for example with the addition
 of priorities or neutralizing edges,
 or by considering synchronous dynamics or other representations

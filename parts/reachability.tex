@@ -65,6 +65,7 @@ is an answer set containing one answer for each
 possible evolution in \texttt{n} time steps,
 starting from a given initial state.
 
+
 \subsection{Reachability verification}
 In this section, we focus on the reachability of a set of processes which corresponds to the following reachability property (see \pref{def:reachability}):
 ``Is it possible, starting from a given initial state, to play a certain number of actions so that a set of given processes are active in the resulting state?''
@@ -127,4 +128,23 @@ they are returned and the computation stops.
 \begin{lstlisting}
 notReached(t) :- goal(F), not instate(F,t). %\label{c3}
 :- notReached(t), query(t). %\label{c4}
+\end{lstlisting}
+
+
+\subsection{Loops elimination}
+\label{sec:loops}
+
+It is necessary to avoid visiting loops several times during the reachability verification.
+Indeed, there is the risk that the iterative version of our tool iterates indefinitely into these loops.
+Thus, we add a constraint (\refl{loop4}) to eliminate all paths with loops.
+For this, we use the atom \texttt{getNbreRepetition(X,T,t)} which permits to get the number \texttt{X} of identical active processes
+between the current time step \texttt{t} and another previous step \texttt{T},
+although we do not detail here the method to compute this value.
+A loop is then easily detected by comparing this value to the total number of sorts (\refll{loop1}{loop3}),
+and therefore simply eliminated by the final constraint.
+\begin{lstlisting}
+loop(t, T) :- getNbreRepetition(X,T,t),   %\label{loop1}
+	getNbreSorts(Y), X=Y. %\label{loop2}
+noChange(t) :- loop(t, _). %\label{loop3}
+:- noChange(t). %\label{loop4}
 \end{lstlisting}

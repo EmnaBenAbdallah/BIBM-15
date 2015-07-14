@@ -248,7 +248,7 @@ Qualitative comparison between our approach and \textsc{ASP-Thomas}.
 
 
 \subsection{Discussion}
-\label{sec:limitations}
+\label{sec:discussion}
 
 In the previous sections,
 we developed two new methods in ASP to check dynamical properties,
@@ -257,11 +257,10 @@ Compared to some other methods described above
 (\textsc{GINsim} and \textsc{LibDDD}) our method is relatively faster and also permits to study larger networks
 (up to $2^{73}$ states in our tests). We exclusively studied networks modeled in Process Hitting. This new formalism for network modeling is a restriction of synchronous automata and thus allows to represent any kind of dynamical model. Moreover, the dynamics of PH it is easy to implement into ASP.
 
-In practice, we can detect the loops in the model dynamics and avoid to check the same path again.
-However, the iterative version of \textsc{Clingo} will continue to iterate until the goal is reached,
-even is stuck in a loop, while it should return an \texttt{unsatisfiable} response.
-This is due to the fact that between each step, all information about the previous visited states is lost.
-To our knowledge, there is no possibility yet to force the incrementation to stop in this iterative \textsc{Clingo} version.
+In practice, we can detect the loops in the model dynamics and avoid to check the same path again, as shown in \pref{sec:loops}.
+However, the iterative version of \textsc{Clingo} can iterate forever even if no answer is satisfied and there is no more path to explore.
+Thus, although it is expected to return an \texttt{unsatisfiable} response, the solver remains stuck in an infinite loop instead.
+To our knowledge, there is no possibility yet to force the incrementation to stop in this iterative \textsc{Clingo} version without reaching the goals.
 It is still possible, however, to limit the number of iterations to an arbitrary
 maximum which will be eventually reached in such case.
 This is possible with the use of a construct limiting the maximum number of steps: ``\texttt{\#const imax = n.}'',
@@ -278,6 +277,6 @@ or, with a similar reasoning, the total number of processes can be chosen.
 
 Given our implementation, if the step \texttt{n} is reached (meaning no valid path was found),
 the computation stops with an \texttt{unsatisfiable} response for the reachability.
-However, if the goal is reached at some intermediary step, it is not necessary to continue the iteration up to ``\texttt{n}''.
+But, if the goal is reached at some intermediary step, it is not necessary to continue the iteration up to ``\texttt{n}''.
 Instead, the computation is stopped and the current trace of the reachability is returned.
 In comparison, \textsc{ASP-Thomas} has to compute all possible dynamic evolutions of length ``\texttt{n}'' before verifying the property.
