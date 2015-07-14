@@ -210,6 +210,43 @@ A summary of differences between our approach and \textsc{ASP-Thomas} is detaile
 % In \textsc{ASP-Thomas}, the run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
 \end{itemize}
 
+\begin{table}[ht]
+\begin{center}
+\noindent%
+\begin{tabular}{|l|c|>{\columncolor{verylightgray}}c|}
+\hline
+  & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
+\hline
+\hline
+ Input Model & Thomas network & Process hitting \\
+% \hline
+%  Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
+\hline
+ Input property & CTL formula & $\mathsf{EF}$ only \\
+ %$s_0 \rightarrow \mathsf{EF}(g)$ \\
+\hline
+ Output & All paths & Minimal paths \\
+\hline
+ Reachability & Bounded & {\bf Unbounded} \\
+\hline
+ Non-reachability & Bounded & Bounded \\
+\hline
+ Search & Depth first & Breadth first \\
+\hline
+ Run time (small $n$) & {\bf Seconds} & Seconds/minutes \\
+\hline
+ Run time (big $n$) & Out/UNSAT & {\bf Seconds/minutes} \\
+\hline
+\end{tabular}
+\vspace*{4pt}
+\caption{\label{tab:qualitative_differences}
+Qualitative comparison between our approach and \textsc{ASP-Thomas}.
+}
+\end{center}
+\end{table}
+
+
+
 \subsection{Discussion}
 \label{sec:limitations}
 
@@ -244,40 +281,3 @@ the computation stops with an \texttt{unsatisfiable} response for the reachabili
 However, if the goal is reached at some intermediary step, it is not necessary to continue the iteration up to ``\texttt{n}''.
 Instead, the computation is stopped and the current trace of the reachability is returned.
 In comparison, \textsc{ASP-Thomas} has to compute all possible dynamic evolutions of length ``\texttt{n}'' before verifying the property.
-
-\begin{table}[ht]
-\begin{center}
-\noindent%
-\begin{tabular}{|l|c|c|}
-\hline
-  & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
-\hline
-\hline
- Input Model & Thomas network & Process hitting \\
-% \hline
-%  Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
-\hline
- Input property & CTL formula & $\mathsf{EF}$ only \\
- %$s_0 \rightarrow \mathsf{EF}(g)$ \\
-\hline
- Output & All paths & Minimal paths \\
-\hline
- Reachability & Bounded & {\bf Unbounded} \\
-\hline
- Non-reachability & Bounded & Bounded \\
-\hline
- Search & Depth first & Breadth first \\
-\hline
- Run time (small $n$) & {\bf Seconds} & Seconds/minutes \\
-\hline
- Run time (big $n$) & Out/UNSAT & {\bf Seconds/minutes} \\
-\hline
-\end{tabular}
-\vspace*{4pt}
-\caption{\label{tab:qualitative_differences}
-Qualitative comparison between our approach and \textsc{ASP-Thomas}.
-}
-\end{center}
-\end{table}
-
-
