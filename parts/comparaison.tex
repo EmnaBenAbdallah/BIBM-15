@@ -165,28 +165,49 @@ it currently does not return the execution of the path achieving the desired rea
 but only outputs its conclusion (True, False or Inconclusive).
 
 \item \textbf{\textsc{ASP-Thomas}}\footnote{The authors wish to thank Laurent Trilling for his help to perform the tests.}
-offers the possibility to model-check CTL properties of Thomas networks. 
-There is however no automatic way that allows the modeling of Thomas networks in ASP, which currently has to be made by hand and requires labeling. As for our method, we use the PH whose actions are easily represented in ASP with one fact per action.
-In addition, the method \textsc{ASP-Thomas} requires to provide a maximum number of steps
-for which the dynamics will be computed, which may be difficult to be predicted. Furthermore, all dynamics of the system have to be computed up to $n$ steps in order to perform a depth first verification.
-It is not the case for our method which can stop as soon as the goal is met, and thus potentially before the $n$\textsuperscript{th} step.
+offers the possibility to model-check CTL properties on Thomas networks.
+Currently, the translation of Thomas networks into ASP, including discrete parameters, is hand-made.
+Then, for a given CTL formula also described in ASP, this tool returns the set of paths satisfying the formula.
+In the following, we only focus on reachability, that is, formulas of the form: $s_0 \Rightarrow \mathsf{EF}(g)$
+where $s_0$ is the initial state and $g$ a goal property.
+It has to be noted that this method requires to provide a total number $n$ of steps
+for which the dynamics will be computed.
+Indeed, all dynamics of the system are computed up to $n$ steps in order to perform a depth first verification;
+thus, this value $n$ has to be bigger than the size of the minimal path and lower than the size of the maximal path,
+and thus may be difficult to predict.
+This is not the case for the iterative version of our method which can stop as soon as the goal is met,
+and thus potentially before such a $n$\textsuperscript{th} step.
 %, the program will stop at the first step that reach the goals: breath first search.
-However it is clear that with a minimal number of steps this approach terminates very quickly when compared with others.
-It also shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
-The a summary of differences between our approach and \textsc{ASP-Thomas} is detailed in \pref{tab:qualitative_differences}.
-The main difference is that, in \textsc{ASP-Thomas}, the search is bounded.
-If the number of steps to reach the goal is part of the goal or if one can a priori know the length of the path to reach the specified goal,
+%It is clear from \pref{tab:reachability} that
+%With a well-chosen number of steps, \textsc{ASP-Thomas} terminates very quickly when compared with others.
+The main consequence on the \textsc{ASP-Thomas} tool
+is that if one can a priori know the length of the path to reach the specified goal,
 this approach can provide very good performance.
-But if the bound is totally unknown, choosing a too small path length can naturally lead to miss the goal.
-%and thus to conclude it is unreachable when it is reachable.
-On the other hand, choosing a bound that is too big will greatly impact the performance.
-For example, in experiment \#3, the goal is reachable with a path of 18 steps,
-and using a bound of 21, \textsc{ASP-Thomas} finishes in 2.61s.
-However, if we fix the bound to 30 steps, it takes several minutes.
+This shows that ASP can be a good choice to run the dynamics of a model and check reachability properties.
+However, if the bound is totally unknown, choosing a too small path length can naturally lead to miss the goal,
+and a too large one will greatly impact the performance or lead to miss the goal as well (if no path of length $n$ exist).
+For example, in experiment \#3, the goal is reachable within 18 steps:
+using a bound of 21, \textsc{ASP-Thomas} finishes in 2.61s;
+however, with a bound of 30 steps, it takes several minutes.
 We can observe similar results on the others benchmarks.
-With our approach, if the goal is reachable, the run time only depends on the distance to reach the goal.
-In \textsc{ASP-Thomas}, the run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
-
+In a nutshell, with our approach, if the goal is reachable, the run time only depends on the distance to reach the goal,
+while with \textsc{ASP-Thomas}, the run time only depends of the chosen bound,
+because all paths of the chosen length will be generated before being checked.
+A summary of differences between our approach and \textsc{ASP-Thomas} is detailed in \pref{tab:qualitative_differences}.
+% This shows that ASP is a good choice to run the dynamics of a model and check reachability properties.
+% The a summary of differences between our approach and \textsc{ASP-Thomas} is detailed in \pref{tab:qualitative_differences}.
+% The main difference is that, in \textsc{ASP-Thomas}, the search is bounded.
+% % If the number of steps to reach the goal is part of the goal or if one can a priori know the length of the path to reach the specified goal,
+% % this approach can provide very good performance.
+% But if the bound is totally unknown, choosing a too small path length can naturally lead to miss the goal.
+% %and thus to conclude it is unreachable when it is reachable.
+% On the other hand, choosing a bound that is too big will greatly impact the performance.
+% For example, in experiment \#3, the goal is reachable with a path of 18 steps,
+% and using a bound of 21, \textsc{ASP-Thomas} finishes in 2.61s.
+% However, if we fix the bound to 30 steps, it takes several minutes.
+% We can observe similar results on the others benchmarks.
+% With our approach, if the goal is reachable, the run time only depends on the distance to reach the goal.
+% In \textsc{ASP-Thomas}, the run time only depends of the chosen bound, because all paths of the chosen length will be generated before being checked.
 \end{itemize}
 
 \subsection{Discussion}
@@ -227,24 +248,29 @@ In comparison, \textsc{ASP-Thomas} has to compute all possible dynamic evolution
 \begin{table}[ht]
 \begin{center}
 \noindent%
-\begin{tabular}{|l|l|c|}
+\begin{tabular}{|l|c|c|}
 \hline
   & \textsc{ASP-Thomas} & \textsc{ASP-PH} \\
 \hline
 \hline
  Input Model & Thomas network & Process hitting \\
+% \hline
+%  Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
 \hline
- Input generation & Hand-made & {\bf Automatic} \\ %with PH-to-ASP \\
+ Input property & CTL formula & $\mathsf{EF}$ only \\
+ %$s_0 \rightarrow \mathsf{EF}(g)$ \\
+\hline
+ Output & All paths & Minimal paths \\
 \hline
  Reachability & Bounded & {\bf Unbounded} \\
 \hline
  Non-reachability & Bounded & Bounded \\
 \hline
  Search & Depth first & Breadth first \\
-  \hline
- Exec. time: small imax & seconds/minutes & seconds/minutes \\
- \hline
- Exec. time: big imax & hours/out &seconds/minutes  \\
+\hline
+ Run time (small $n$) & {\bf Seconds} & Seconds/minutes \\
+\hline
+ Run time (big $n$) & Out/UNSAT & {\bf Seconds/minutes} \\
 \hline
 \end{tabular}
 \vspace*{4pt}
