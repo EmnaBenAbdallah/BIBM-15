@@ -82,15 +82,10 @@ Otherwise, the current answer will be eliminated by a constraint (not detailed h
 reached(F, T) :-  goal(F), instate(F, T). %\label{c2}
 \end{lstlisting}
 
-% \texttt{\#program base}
-% \texttt{\#program step(t).}
-% \texttt{\#program check(t).}
 
 However, the limitation of the method above is that the user has to decide upstream
 the number of computed steps that should be sufficient to reach all the goals.
-It is a main disadvantage shared for instance by the method proposed in~\cite{roccaasp} because a search in $N$ steps will find no solution
-if the shortest path to the goal requires $K$ steps with $K > N$.
-It may also needlessly lengthen the resolution if the shortest path requires $n$ steps with $n << N$.
+It is a main disadvantage shared for instance by the method proposed in ~\cite{roccaasp} (called \textsc{ASP-THOMAS} and more detailed comparaision is in the following section).
 One solution is then to use an incremental computation mode,
 which is especially tackled by the incremental solver of \textsc{Clingo}~\cite{gebser2008user}.
 The corresponding syntax separates the program in 3 parts.
