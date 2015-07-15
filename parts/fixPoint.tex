@@ -1,47 +1,24 @@
-The study of fixed points (and, more generally, basins of attraction) provides an important understanding of the different behaviors of a Biological Regulatory Network (BRN)~\cite{wuensche1998genomic}.
+The study of basins of attraction provides an important understanding of the different behaviors of a Biological Regulatory Network (BRN)~\cite{wuensche1998genomic}.
 Indeed, a system will always eventually end in a basin of attraction,
-and this may depend on biological switch or other complex phenomena.
-A fixed point is a state of the BRN in which it is not possible to have any new dynamic evolutions anymore;
-in other words, it is a basin of attraction that is composed of only one state.
+and this may depend on biological switches or other complex phenomena.
+Here we focus on fixed points (also called stable states or steady states),
+which are basins of attraction composed of only one state.
+% A fixed point is a state of the BRN in which it is not possible to have any new dynamic evolutions anymore;
+% in other words, it is a basin of attraction that is composed of only one state.
 
 In the following, we consider a Process Hitting $\PH = (\Sigma, \PHl, \PHh)$.
-A state $s \in L$ is a fixed point (or stable state) of the Process Hitting model if and only if it has no successor state, \ie regarding the active processes in $s$ there is no playable action (see \pref{def:fixpoint}).
-Therefore, it has been shown~\cite{PMR10-TCSB} that
+We recall that a state $s \in L$ is a fixed point of the PH model if and only if it has no successor state,
+\ie there is no playable action in $s$ (see \pref{def:fixpoint}).
+It is straightforward that
 a stable state in a Process Hitting model is a state so that
-every active process does not hit or is not hit by another process in the same state.
+every active process does not hit or is not hit by another active process in the same state~\cite{PMR10-TCSB}.
 We note especially that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
 
-\subsection{Answer Set Programming (ASP)}
-
-In this section, we recapitulate the basic elements of ASP \cite{baral2003knowledge, Vladimir, Glimpse}.
-An answer set program is a finite set of rules of the form:
-  \[a_{0}\ \leftarrow \ a_{1},\ \ldots,\ a_{m},\ not\ a_{m+1},\ \ldots,\ not\ a_{n}\]
-where $n \ge m \ge 0$, $a_{0}$ is a propositional atom or $\bot$, all
-$a_{1}, \ldots ,a_{n}$ are propositional atoms and the symbol "$not$'' denotes  negation as failure.
-The intuitive reading of such a rule is that whenever $a_{1}, \ldots, a_{m}$
-are known to be true and there is no evidence for any of the negated atoms $a_{m+1}, \ldots, a_{n}$ to be true, then $a_{0}$ has to be true as well.
-If $a_{0} = \bot$, then the rule becomes a constraint (in which case $a_{0}$ is usually omitted).
-As $\bot$ can never become true, if the right-hand side of a constraint is validated, it invalidates the whole answer set.
-
-In the ASP paradigm, the search of solutions consists in computing the \emph{answer sets} of a given answer set program.
-An answer set for a program is defined by Gelfond and Lifschitz \cite{DBLP:conf/iclp/GelfondL88} as follows.
-An \emph{interpretation} $I$ is a finite set of propositional atoms.
-%An atom $a_i$ is \emph{true under $I$} if $a_i \in I$, and false otherwise.
-A rule $r$ as given above is \emph{true under~$I$} if and only if:
-  \[\{a_1,\ \dots,\ a_{m}\} \subseteq I \wedge \{a_{m+1},\ \ldots,\ a_{n}\} \cap I = \emptyset \Rightarrow a_{0} \in I \enspace.\]
-An interpretation $I$ is a \emph{model} of a program $P$ if each rule $r \in P$ is true under $I$.
-Finally, $I$ is an answer set of $P$ if $I$ is a minimal (in terms of inclusion) model of $P^{I}$,
-where $P^{I}$ is defined as the program that results from $P$ by deleting all rules that contain a negated atom that appears in $I$,
-and deleting all negated atoms from the remaining rules.
-Programs can yield no answer set, one answer set, or many answer sets.
-To compute answer sets of an answer set program, one needs a grounder (to remove variables from the rules) and a solver.
-For the present work, we used \textsc{Clingo}\footnote{We used \textsc{Clingo} version 4.5.0: \url{http://potassco.sourceforge.net/}}~\cite{gebser2008user, gebser2010incremental} which is a combination of both.
-
 \subsection{Process Hitting translation in ASP}
-Before analyzing the dynamics of the network,
-we first need to translate the concerned PH network into ASP\footnote{All programs, including this translation and the methods described in the following, are available online at: \url{https://github.com/EmnaBenAbdallah/verification-of-dynamical-properties_PH}}.
-To do this we use the following self-describing predicates:
-\texttt{sort} to define sorts, \texttt{process} for the processes and \texttt{action} for the network actions.
+Before any analysis of the network,
+we first need to translate it into ASP\footnote{All programs, including this translation and the methods described in the following, are available online at: \url{https://github.com/EmnaBenAbdallah/verification-of-dynamical-properties_PH}}.
+To do this we use the self-describing predicates
+\texttt{sort}, \texttt{process} and \texttt{action} to define the sorts, processes and actions of the network, respectively.
 \pref{ex:asp-ph} shows how a PH network is defined with these predicates.
 
 \begin{example}[Representation of a PH network in ASP]
@@ -58,8 +35,8 @@ action("a",0,"ab",2,0). action("a",0,"ab",3,1). %\label{actions4}
 action("a",1,"ab",0,2). action("a",1,"ab",1,3). %\label{actions5}
 action("ab",3,"z",0,1). %\label{actions6}
 \end{lstlisting}
-In \refll{ASPprocess1}{ASPprocess2} we create the list of processes (expression level) corresponding to each sort,
-for example the sort "\texttt{a}'' has 2 processes numbered \texttt{0} and \texttt{1};
+In \refll{ASPprocess1}{ASPprocess2} we create the list of processes corresponding to each sort.
+For example the sort ``\texttt{a}'' has 2 processes numbered \texttt{0} and \texttt{1};
 this predicate will in fact expand into the two following predicates:
 \begin{lstlisting}[numbers=none]
 process("a", 0). process("a", 1).
@@ -77,12 +54,12 @@ $\PHfrappe{a_0}{b_0}{b_1}$.
 
 \subsection{Search of fixed points}
 
-The enumeration of fixed points requires to translate the definition of a stable state (see \pref{def:fixpoint})
+The enumeration of fixed points requires to translate the definition of a stable state (given in \pref{def:fixpoint})
 into an ASP program.
 The first step consists of eliminating all processes involved in a self-hit;
 the other processes are recorded by the predicate \texttt{shownProcess} (\refll{hiddenProcess}{shownProcess2}).
 \begin{lstlisting}
-hiddenProcess(A,I) :- action(A,I,B,J,K), A=B. %\label{hiddenProcess}
+hiddenProcess(A,I) :- action(A,I,A,I,K). %\label{hiddenProcess}
 shownProcess(A,I) :- not hiddenProcess(A,I), %\label{shownProcess1}
                      process(A,I). %\label{shownProcess2}
 \end{lstlisting}
@@ -90,7 +67,7 @@ Then, we have to browse all remaining processes of this graph in order to genera
 that is, all possible combinations of processes by choosing only one process from each sort (\refll{select-processes1}{select-processes2}).
 %So that \refll{hiddenProcess}{shownProcess2} is an optimization to reduce the number of possible states.
 \begin{lstlisting}
-1 { selectedProcess(A,I) : shownProcess(A,I) } 1 %\label{select-processes1}
+1 { selectProc(A,I) : shownProcess(A,I) } 1 %\label{select-processes1}
          :- sort(A). %\label{select-processes2}
 \end{lstlisting}
 The previous cardinality rule creates as many potential answer sets as the number of possible states
@@ -101,15 +78,16 @@ For this, we use a constraint:
 any solution that satisfy the body of this constraint will be removed from the answer set.
 Regarding our problem, a state is eliminated if there exists an action between two selected processes (\refll{constraintFix1}{constraintFix}).
 \begin{lstlisting}
-:- action(A,I,B,J,_), selectedProcess(A,I), %\label{constraintFix1}
-    selectedProcess(B,J), A!=B. %\label{constraintFix}
+:- action(A,I,B,J,_), selectProc(A,I), %\label{constraintFix1}
+         selectProc(B,J), A!=B. %\label{constraintFix}
 \end{lstlisting}
 In the end, the fixed points of the considered model are exactly the states represented in each remaining answer,
-described by the atoms \texttt{fixProc(A,I)} (\refl{fixproc}).
-% Finally the \texttt{selectedProcess(A,I)} permits to define the fixed point which is compound by these selected processes:
-\begin{lstlisting}
-fixProc(A,I) :- selectedProcess(A,I). %\label{fixproc}
-\end{lstlisting}
+described by the atoms \texttt{selectProc(A,I)}.
+% described by the atoms \texttt{fixProc(A,I)} (\refl{fixproc}).
+% Finally the \texttt{selectProc(A,I)} permits to define the fixed point which is compound by these selected processes:
+% \begin{lstlisting}
+% fixProc(A,I) :- selectProc(A,I). %\label{fixproc}
+% \end{lstlisting}
 
 \begin{example}[Fixed points enumeration]
 The PH model of \pref{fig:ph} contains 4 sorts:
@@ -122,9 +100,9 @@ If we execute the ASP program detailed below (see \refll{hiddenProcess}{constrai
 alongside with the description of the PH model given in \pref{ex:asp-ph} (see \refll{ASPprocess1}{actions5}),
 we obtain two answer sets that match the expected result:
 \begin{lstlisting}[numbers=none]
-Answer 1 : fixProc(a,1), fixProc(b,0), 
-		fixProc(z,0), fixProc(ab,2)
-Answer 2 : fixProc(a,1), fixProc(b,0), 
-		fixProc(z,1), fixProc(ab,2)
+Answer 1 : selectProc(a,1), selectProc(b,0), 
+             selectProc(z,0), selectProc(ab,2)
+Answer 2 : selectProc(a,1), selectProc(b,0), 
+             selectProc(z,1), selectProc(ab,2)
 \end{lstlisting}
 \end{example}
