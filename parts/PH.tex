@@ -46,7 +46,7 @@ However, despite to this restriction, we can add non-biological components into 
 
 \begin{example}
 
-\pref{fig:ph} represents a PH with four sorts: $a$, $b$, $z$ and the cooperative sort $ab$.
+\pref{fig:ph} represents a PH model with four sorts: $a$, $b$, $z$ and the cooperative sort $ab$.
 
 \tikzstyle{prio}=[draw,thick,-stealth]
 
@@ -115,7 +115,7 @@ For any given process $a_i$ we also note: $a_i \in s$ if and only if $\PHget{s}{
 
 \begin{definition} [Playable action]
 \label{def:playableAction}
-Let $\PH = (\PHs,\PHl,\PHa)$ be a Process Hitting and $s \in \PHl$ a state of $PH$.
+Let $\PH = (\PHs,\PHl,\PHa)$ be a Process Hitting and $s \in \PHl$ a state of $\PH$.
 We say that the action $h = \PHfrappe{a_i}{b_j}{b_k} \in \PHa$
 is \emph{playable in state $s$} if and only if
 $a_i \in s$ and $b_j \in s$ (\ie $\PHget{s}{a} = a_i$ and $\PHget{s}{b}=b_j$).
@@ -130,7 +130,7 @@ $\forall c \in \PHs, c \neq b \Rightarrow \PHget{(s \play h)}{c}=\PHget{s}{c}$.
 
 The study of the dynamics of biological networks was the focus of many works, explaining the diversity of network modelings and the different methods developed in order to check dynamic properties.
 In this paper we focus on two main properties of a PH model: the stable states and the reachability.
-In the following, we consider a PH model $(\PHs,\PHl,\PHa)$,
+In the following, we consider a PH model $\PH=(\PHs,\PHl,\PHa)$,
 and we formally define these properties.
 How to verify them on a networks with ASP is the subject of the rest of this paper.
 %and explain how they could be verified on such a network.
