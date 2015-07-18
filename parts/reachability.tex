@@ -30,15 +30,14 @@ Therefore, we define an ASP predicate \texttt{playable(action(A,I,B,J,K),T)} whi
 when the processes $\texttt{A}_\texttt{I}$ and $\texttt{B}_\texttt{J}$ are active at step \texttt{T}.
 
 The cardinality rule of \refl{e2a}
-creates a set of as many predicates as there are possible evolutions from the current step,
-thus reproducing all possible branchings in the possible evolutions of the model, in the form of as many potential answer sets. It is also needed to enforce the strictly asynchronous dynamic
+creates a set of as many predicates as there are possible simulations from the current step,
+thus reproducing all possible branchings in the possible simulations of the model, in the form of as many potential answer sets. It is also needed to enforce the strictly asynchronous dynamic
 which state that exactly one process can change between two steps.
 To remove all scenarios where two or more actions have been played between
 two steps, we use the constraint of \refl{e2}.
 Thus, the remaining scenarios contained in the answer sets all strictly follow
 the asynchronous dynamics of the PH.
 We finally witness that sort ``\texttt{B}'' has been changed between steps ``\texttt{T}'' and ``\texttt{T+1}'' with the predicate \texttt{change(B,T+1)} of \refl{e3}.
-%which means that in sort \texttt{B}, the active process can change between steps \texttt{T} and \texttt{T+1}.
 
 \begin{lstlisting}
 0{play(Action,T)}1 :- playable(Action,T), time(T). %\label{e2a} 
@@ -53,16 +52,16 @@ can be computed by the rules of \refll{e4}{e5a}.
 instate(activeProcess(B,K),T+1) :-  %\label{e4}
 	play(action(_,_,B,_,K),T), time(T). %\label{e4a}
 instate(activeProcess(B,K),T+1) :-  %\label{e5}
-	not change(B,T+1),
-	instate(activeProcess(B,K),T), time(T). %\label{e5a}
+	not change(B,T+1), %\label{e5a}
+	instate(activeProcess(B,K),T), time(T). %\label{e5b}
 \end{lstlisting}
 In other words, the state of step \texttt{T+1} contains one updated active process $\texttt{B}_\texttt{K}$
 resulting from the predicate \texttt{play(action(\_,\_,B,\_,K),T)} (\refll{e4}{e4a})
-as well as all the unchanged processes that correspond to the other sorts (\refll{e5}{e5a}).
+as well as all the unchanged processes that correspond to the other sorts (\refll{e5}{e5b}).
 
 The overall result of the pieces of program presented in this subsection
 is an answer set containing one answer for each
-possible evolution in \texttt{n} time steps,
+possible simulation in \texttt{n} time steps,
 starting from a given initial state.
 
 

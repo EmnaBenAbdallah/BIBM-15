@@ -27,8 +27,7 @@ and a T-cell receptor (TCR) signaling network of 40 components~\cite{Klamt06}.
 These models were chosen to be of different sizes:
 from small (12 components) to large (40 components).
 We note however that the considered PH models may contain more sorts than
-the original number of biological components, due to the use of
-"cooperative sorts'', which allow to model Boolean gates but do not necessarily
+the original number of biological components, due to the use of "cooperative sorts", which allow to model Boolean gates but do not necessarily
 have a biological meaning.
 The different model representations that are required to perform these benchmarks have been obtained by translations
 from the PH
@@ -259,7 +258,7 @@ Compared to some other methods described above
 
 In practice, we can detect the loops in the model dynamics and avoid to check the same path again, as shown in \pref{sec:loops}.
 However, the iterative version of \textsc{Clingo} can iterate forever even if no answer is satisfied and there is no more path to explore.
-Thus, although it is expected to return an \texttt{unsatisfiable} response, the solver remains stuck in an infinite loop instead.
+Thus, although it is expected to return an \texttt{unsatisfiable} response, the solver remains stuck for infinity in a state instead.
 To our knowledge, there is no possibility yet to force the incrementation to stop in the iterative version without reaching the goals.
 It is still possible, however, to limit the number of iterations to an arbitrary
 maximum which will be eventually reached in such case.
