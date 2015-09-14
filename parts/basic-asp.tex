@@ -1,5 +1,5 @@
 
-In this section, we briefly recapitulate the basic elements of Answer Set Programming (ASP) \cite{baral2003knowledge, Vladimir, Glimpse}.
+In this section, we briefly recapitulate the basic elements of Answer Set Programming (ASP) \cite{baral2003knowledge}.
 An answer set program is a finite set of rules of the form:
   \[a_{0}\ \leftarrow \ a_{1},\ \ldots,\ a_{m},\ not\ a_{m+1},\ \ldots,\ not\ a_{n}\]
 where $n \ge m \ge 0$, $a_{0}$ is a propositional atom or $\bot$, all
@@ -21,4 +21,4 @@ where $P^{I}$ is defined as the program that results from $P$ by deleting all ru
 and deleting all negated atoms from the remaining rules.
 Programs can yield no answer set, one answer set, or many answer sets.
 To compute answer sets of an answer set program, one needs a grounder (to remove variables from the rules) and a solver.
-For the present work, we used \textsc{Clingo}\footnote{We used \textsc{Clingo} version 4.5.0: \url{http://potassco.sourceforge.net/}}~\cite{gebser2008user, gebser2010incremental} which is a combination of both.
+For the present work, we used \textsc{Clingo}\footnote{We used \textsc{Clingo} version 4.5.0: \url{http://potassco.sourceforge.net/}}~\cite{gebser2010incremental} which is a combination of both.

@@ -3,16 +3,13 @@ Indeed, a system will always eventually end in a basin of attraction,
 and this may depend on biological switches or other complex phenomena.
 Here we focus on fixed points (also called stable states or steady states),
 which are basins of attraction composed of only one state.
-% A fixed point is a state of the BRN in which it is not possible to have any new dynamic evolutions anymore;
-% in other words, it is a basin of attraction that is composed of only one state.
-
-In the following, we consider a Process Hitting $\PH = (\Sigma, \PHl, \PHh)$.
-We recall that a state $s \in L$ is a fixed point of the PH model if and only if it has no successor state,
-\ie there is no playable action in $s$ (see \pref{def:fixpoint}).
-It is straightforward that
-a stable state in a Process Hitting model is a state so that
-every active process does not hit or is not hit by another active process in the same state~\cite{PMR10-TCSB}.
-We note especially that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
+%In the following, we consider a Process Hitting $\PH = (\Sigma, \PHl, \PHh)$.
+%We recall that a state $s \in L$ is a fixed point of the PH model if and only if it has no successor state,
+%\ie there is no playable action in $s$ (see \pref{def:fixpoint}).
+%It is straightforward that
+%a stable state in a Process Hitting model is a state so that
+%every active process does not hit or is not hit by another active process in the same state~\cite{PMR10-TCSB}.
+%We note especially that given this result, processes involved in a self-hit (an action whose hitter and target processes are the same) cannot be part of a stable state.
 
 \subsection{Process Hitting translation in ASP}
 Before any analysis of the network,
@@ -73,7 +70,7 @@ that is, all possible combinations of processes by choosing only one process fro
 The previous cardinality rule creates as many potential answer sets as the number of possible states
 to take into account.
 Finally, the last step consists in filtering out any state that is not a fixed point,
-or, in other words, eliminating all candidate answer sets in which an action could be played (and thus lead the network into another state).
+or, in other words, eliminating all candidate answer sets in which an action could be played.% (and thus lead the network into another state).
 For this, we use a constraint:
 any solution that satisfy the body of this constraint will be removed from the answer set.
 Regarding our problem, a state is eliminated if there exists an action between two selected processes (\refll{constraintFix1}{constraintFix}).
@@ -83,18 +80,13 @@ Regarding our problem, a state is eliminated if there exists an action between t
 \end{lstlisting}
 In the end, the fixed points of the considered model are exactly the states represented in each remaining answer,
 described by the atoms \texttt{selectProc(A,I)}.
-% described by the atoms \texttt{fixProc(A,I)} (\refl{fixproc}).
-% Finally the \texttt{selectProc(A,I)} permits to define the fixed point which is compound by these selected processes:
-% \begin{lstlisting}
-% fixProc(A,I) :- selectProc(A,I). %\label{fixproc}
-% \end{lstlisting}
 
 \begin{example}[Fixed points enumeration]
 The PH model of \pref{fig:ph} contains 4 sorts:
 $a$, $b$ and $z$ have 2 processes and $ab$ has 4; therefore, the whole model has $2*2*2*4 = 32$ states (whether they can be reached or not from a given initial state).
-We can check that this model contains $2$ fixed points: $\PHstate{b_0, a_1, ab_2, z_0}$ and $\PHstate{b_0, a_1, ab_2, z_1}$.
+We can check that this model contains exactly $2$ fixed points: $\PHstate{b_0, a_1, ab_2, z_0}$ and $\PHstate{b_0, a_1, ab_2, z_1}$.
 Indeed, there is no action between each two processes contained in this state so no execution is possible from these.
-In this example, no other state verifies this property.
+%In this example, no other state verifies this property.
 
 If we execute the ASP program detailed below (see \refll{hiddenProcess}{constraintFix}),
 alongside with the description of the PH model given in \pref{ex:asp-ph} (see \refll{ASPprocess1}{actions5}),

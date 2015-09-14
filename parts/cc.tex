@@ -1,21 +1,27 @@
 In this paper, we proposed a new logical approach to address dynamical properties of Process Hitting models. The originality of our work consists in using ASP a powerful declarative programming paradigm. Thanks to the encoding we introduced, we are not only able to tackle the enumation of fixed points but also to consider reachability properties. The major benefit of such a method is to get an exhaustive enumeration of all corresponding paths while still being tractable for models with dozens of interacting components.
 
-The implementation of these problems was given into ASP,
-and applied to several biological examples of various sizes, up to
-40 biological components.
-The results showed that our implementation is faster and deals with bigger models
-than other classical approaches, especially \textsc{LibDDD} which is a symbolic model-checker.
+%The implementation of these problems was given into ASP, and applied to several biological examples of various sizes, up to 40 biological components. The results showed that our implementation is faster and deals with bigger models than other classical approaches, especially \textsc{LibDDD} which is a symbolic model-checker.
 
-Our work could benefit from several extensions, 
-%starting by discussing if there is possible improvement to the solver of the iterative version of \textsc{Clingo} to treat the final infinite loop in some cases with unreachable goals -- and thus also the need to arbitrarily cap the number of iterations.
-starting by direct improvements to the developed tool,
-such as removing the final infinite loop in some cases when the goal is not reachable --
-and thus also the need to arbitrarily cap the number of iterations. We think also that possible improvements to the solver of the iterative version of \textsc{Clingo} could be necessary to treat this unsatisafaible cases.
-Of course, the set of applicable models can also be extended,
+%Our work could benefit from several extensions, 
+%%starting by discussing if there is possible improvement to the solver of the iterative version of \textsc{Clingo} to treat the final infinite loop in some cases with unreachable goals -- and thus also the need to arbitrarily cap the number of iterations.
+%starting by direct improvements to the developed tool,
+%such as removing the final infinite loop in some cases when the goal is not reachable --
+%and thus also the need to arbitrarily cap the number of iterations. We think also that possible improvements to the solver of the iterative version of \textsc{Clingo} could be necessary to treat this unsatisafaible cases.
+%Of course, the set of applicable models can also be extended,
+%for example with the addition
+%of priorities or neutralizing edges,
+%or by considering synchronous dynamics or other representations
+%such as Thomas modeling~\cite{BernotSemBRN}.
+%However, the range of the analysis can also be extended,
+%by searching instead the set of initial states
+%allowing to reach a given goal,
+%or extending the method to universal properties (like the $\mathsf{AF}$ operator).
+
+Our work could benefit from several extensions,such that the set of applicable models can also be extended,
 for example with the addition
 of priorities or neutralizing edges,
 or by considering synchronous dynamics or other representations
-such as Thomas modeling~\cite{BernotSemBRN}.
+such as Thomas modeling~\cite{Thomas73}.
 However, the range of the analysis can also be extended,
 by searching instead the set of initial states
 allowing to reach a given goal,

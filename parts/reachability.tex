@@ -47,7 +47,7 @@ change(B,T+1) :- play(action(_,_,B,_,_),T),time(T). %\label{e3}
 
 Finally, the active processes at step \texttt{T+1},
 thus representing the next state in the dynamics, depending on the chosen bounce,
-can be computed by the rules of \refll{e4}{e5a}.
+can be computed by the rules of \refl{e4} and \refl{e5}.
 \begin{lstlisting}
 instate(activeProcess(B,K),T+1) :-  %\label{e4}
 	play(action(_,_,B,_,K),T), time(T). %\label{e4a}
@@ -64,10 +64,9 @@ is an answer set containing one answer for each
 possible simulation in \texttt{n} time steps,
 starting from a given initial state.
 
-
 \subsection{Reachability verification}
 In this section, we focus on the reachability of a set of processes which corresponds to the following reachability property (see \pref{def:reachability}):
-``Is it possible, starting from a given initial state, to play a certain number of actions so that a set of given processes are active in the resulting state?''
+%``Is it possible, starting from a given initial state, to play a certain number of actions so that a set of given processes are active in the resulting state?''
 In the following, we use the implementation computing the dynamics given in the previous section, in order to solve this reachability problem.
 For this, we first use a predicate \texttt{goal} to list the processes we want to reach (\refl{c1}) and we add as many rules of this kind as there are objective processes.
 \begin{lstlisting}
@@ -81,12 +80,11 @@ Otherwise, the current answer will be eliminated by a constraint (not detailed h
 reached(F, T) :-  goal(F), instate(F, T). %\label{c2}
 \end{lstlisting}
 
-
 However, the limitation of the method above is that the user has to decide upstream
 the number of computed steps that should be sufficient to reach all the goals.
-It is a main disadvantage which is shared for instance by the method proposed in~\cite{roccaasp} (called \textsc{ASP-THOMAS} and detailed below).
+It is a main disadvantage which is shared for instance by the method proposed in~\cite{roccaasp}. % (called \textsc{ASP-THOMAS} and detailed below).
 One solution is then to use an incremental computation mode,
-which is especially tackled by the incremental solver of \textsc{Clingo}~\cite{gebser2008user}.
+which is especially tackled by the incremental solver of \textsc{Clingo}~\cite{gebser2010incremental}.
 The corresponding syntax separates the program in 3 parts.
 The \texttt{base} part contains only non-incremental elements
 and is thus used to declare general rules
@@ -108,7 +106,7 @@ In each step \texttt{t}, the program computes:
   \item the possible bounces: \texttt{change(B,t)},
   \item the new state: \texttt{instate(activeProcess(A,I),t+1)}
 \end{itemize}
-in the \texttt{step(t)} part
+In the \texttt{step(t)} part
 the same way than previously,
 but they are only computed for the current step.
 The solver then compares its current answer sets with
