@@ -14,15 +14,16 @@ We therefore define the predicate \texttt{time(0..n)} which sets the number of s
 The value of \texttt{n} can be arbitrarily chosen;
 for example, \texttt{time(0..10)} will compute the 11 first steps,
 including the initial state.
-In order to specify such an initial state, we add several facts
-to make a list of all processes included in this state:
+Moreover, in order to specify such an initial state, we add several facts
+to list of all processes included in this state:
 \begin{lstlisting}
 init(activeProcess("a",0)).
 init(activeProcess("b",0)).
 init(activeProcess("ab",0)).
 init(activeProcess("z",0)).
 \end{lstlisting}
-where ``\texttt{a}'' is the name of the sort and ``\texttt{0}'' the index of the active process.
+where, for instance, ``\texttt{a}'' is the name of the sort and ``\texttt{0}'' the index of the active process.
+
 The dynamics of a network is described by its actions;
 therefore, identifying the future states requires to first identify the playable actions for each state.
 We remind that an action is playable in a state when both its hitter process and target process are active in this state (see \pref{def:playableAction}).

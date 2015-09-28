@@ -20,14 +20,13 @@ called respectively \emph{hitter}, \emph{target} and
 We also call a \emph{self-hit} any action whose hitter and target sorts are the same,
 that is, of the form: $\PHfrappe{a_i}{a_i}{a_k}$.
 
-The PH is therefore a restriction of synchronous automata, where each transition
+The PH is therefore a restriction of synchronous automata networks, where each transition
 changes the local state of exactly one automaton,
 and is triggered by the local states of at most two distinct automata.
-This restriction in the form of the actions was chosen to permit
+This restriction on the actions was chosen to permit
 the development of efficient static analysis methods
-based on abstract interpretation~\cite{PMR12-MSCS}
-We also use this particular form the dynamical analyses that we present in this paper.
-However, despite to this restriction, we can add non-biological components into the system, that we call \emph{cooperative sorts} and that allow to model the cooperation between 2 or more components. This allows to partly palliate the reduced expressivity of the PH framework.
+based on abstract interpretation~\cite{PMR12-MSCS}.
+However, despite this, we can add non-biological components into the system, called \emph{cooperative sorts}, that allow to model the cooperation between 2 or more components. This allows to partly palliate the reduced expressivity of the PH framework.
 %So it maintains the effectiveness of the static and dynamic analysis.
 
 \begin{definition}[Process Hitting]\label{def:PH}
@@ -102,7 +101,7 @@ However, despite to this restriction, we can add non-biological components into 
   \end{tikzpicture}
   }
   \caption{\label{fig:ph}
-A PH model example with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (biological components and multiplexes), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$, $b$ and $z$ are all either at level $0$ or $1$, and the cooperative sort $ab$ has 4 levels corresponding to the combination of the levels of sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
+An example of PH model with four sorts: $a$, $b$, $ab$ and $z$. Boxes represent the sorts (biological components and logic gates), circles represent the processes (component levels), and the actions that model the dynamic behavior are depicted by pairs of arrows in solid and dotted lines. $a$, $b$ and $z$ are all either at level $0$ or $1$, and the cooperative sort $ab$ has 4 levels corresponding to the combination of the levels of sorts $a$ and $b$. The grayed processes stand for the possible initial state $\PHstate{a_0, b_0, ab_{00}, z_0}$.
   }
 \end{figure}
 
@@ -128,11 +127,11 @@ $\forall c \in \PHs, c \neq b \Rightarrow \PHget{(s \play h)}{c}=\PHget{s}{c}$.
 
 \subsection{Dynamical properties}
 
-The study of the dynamics of biological networks was the focus of many works, explaining the diversity of network modelings and the different methods developed in order to check dynamic properties.
+The study of the dynamics of biological networks was the focus of many works, explaining the diversity of network modelings and the different methods developed in order to check dynamical properties.
 In this paper we focus on two main properties of a PH model: the stable states and the reachability.
 In the following, we consider a PH model $\PH=(\PHs,\PHl,\PHa)$,
 and we formally define these properties.
-How to verify them on a networks with ASP is the subject of the rest of this paper.
+How to verify them with the help of ASP is the subject of the rest of this paper.
 %and explain how they could be verified on such a network.
 
 A \emph{fixed point}, also called \emph{stable state},
@@ -164,7 +163,7 @@ which has an exponential complexity.
 
 In the following, if $s \in \PHl$ is a state,
 we call \emph{scenario in~$s$}
-any sequence of actions that are successively playable in $s$.
+any sequence of successively playable actions in $s$.
 We also note $\Sce(s)$ the set of all scenarios in $s$.
 Moreover, we denote by $\Proc = \bigcup_{a \in \PHs} \PHl_a$
 the set of all process in $\PH$.

@@ -22,7 +22,7 @@ This paper is motivated by the two specific -- although widespread -- problems o
 % Such formalisms allow, in addition to their traditional use in the computer world,
 % to model dynamic systems (such as BRNs) in order to study their behavior or with the aim to control them \cite{chaouiya2008qualitative, balov2012discrete}.
 
-In order to address the formal checking of dynamical properties within very large BRNs, a new discrete formalism, named Process Hitting (PH) \cite{PMR10-TCSB}, was recently proposed to model concurrent systems having components with a few qualitative levels. A PH describes, in an atomic manner, the possible evolutions of a ``process'' (representing one component at one level) triggered by the hit of other ``processes'' in the system. Compared with other BRNs formalisms, the particular structure of the PH makes the formal analysis of BRNs with hundreds of components tractable. 
+In order to address the formal checking of dynamical properties within very large BRNs, a new discrete formalism, named Process Hitting (PH) \cite{PMR10-TCSB}, was recently proposed to model concurrent systems having components with few qualitative levels. A PH describes, in an atomic manner, the possible evolutions of a ``process'' (representing one component at one level) triggered by the hit of other ``processes'' in the system. Compared with other BRNs formalisms, the particular structure of the PH makes the formal analysis of BRNs with hundreds of components tractable~\cite{PMR12-MSCS}. 
 % A voir à laisser ou à enlever
 %This was proved by a first work on the PH in \cite{PMR12-MSCS} which analyzes big networks and gives a response in a very short time. But this developed technique was based on abstract methods computing approximations of the dynamics that could be inconclusive in some cases. Moreover, in the case of a positive answer, it currently does not return the execution of the path achieving the desired reachability, but only outputs its conclusion.
 
@@ -30,20 +30,21 @@ Our goal in this paper is to develop exhaustive methods to analyze Biological Re
 \begin{itemize}
 \item[-] Finding all possible steady states of a BRN,
 \item[-] Simulating the evolution of a biological network,
-\item[-] Computing the shortest execution path to reach a property.
+\item[-] Computing the shortest execution path to reach a goal.
 \end{itemize}
 
  The particularity of our contribution relies in the use of Answer Set Programming
 (ASP) \cite{baral2003knowledge}
 to compute the results.
-This declarative programming framework has been proven efficient
+This declarative programming framework has proved efficient
 to tackle models with a large number of components and parameters.
 Our aim here is to assess its potential w.r.t.\ the computation
-of some dynamical properties of PH models. In addition, we chose the PH framework that was mainly used for biological networks, and it allows to represent any kind of dynamical model,
+of some dynamical properties of PH models.
+We chose the PH framework because it allows to represent a wide range of dynamical models,
 %and converters to several other representations are available and included into \textsc{Pint}\footnote{\textsc{Pint} version 2015-11-14 has been used for this work; it is available at: \url{http://loicpauleve.name/pint/}}~\cite{PMR12-MSCS}.
-Indeed, the the particular form of the actions of the PH allows
-to easily represent them using Answer Set Programming,
-with one fact per action.
+and the particular form of its actions
+can be easily represented using ASP,
+with exactly one fact per action.
 % A voir à laisser ou à enlever
 %We note that although an efficient dynamical analysis already exists for this framework,
 %provided with \textsc{Pint} and based on an approximation of the dynamics,
