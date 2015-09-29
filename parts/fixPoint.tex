@@ -33,13 +33,13 @@ action("a",1,"ab",0,2). action("a",1,"ab",1,3). %\label{actions5}
 action("ab",3,"z",0,1). %\label{actions6}
 \end{lstlisting}
 In \refll{ASPprocess1}{ASPprocess2} we create the list of processes corresponding to each sort.
-For example the sort ``\texttt{a}'' has 2 processes numbered \texttt{0} and \texttt{1};
+For example the sort \texttt{a} has 2 processes numbered \texttt{0} and \texttt{1};
 predicate ``\texttt{process("a", 0..1).}'' will in fact expand into the two following predicates:
 \begin{lstlisting}[numbers=none]
 process("a", 0). process("a", 1).
 \end{lstlisting}
-The processes of the cooperative sort ``\texttt{ab}'',
-which represents a cooperation between the biological components ``\texttt{a}'' and ``\texttt{b}'',
+The processes of the cooperative sort \texttt{ab},
+which represents a cooperation between the biological components \texttt{a} and \texttt{b},
 have been relabeled \texttt{0}, \texttt{1}, \texttt{2} and \texttt{3}.
 \Refl{ASPsort} enumerates every sort of the network from the previous information.
 In ASP, a word starting with a capital letter is a variable,
@@ -64,7 +64,7 @@ Then, we have to browse all remaining processes of this graph in order to genera
 that is, all possible combinations of processes by choosing only one process from each sort (\refll{select-processes1}{select-processes2}).
 %So that \refll{hiddenProcess}{shownProcess2} is an optimization to reduce the number of possible states.
 \begin{lstlisting}
-1 { selectProc(A,I) : shownProcess(A,I) } 1 %\label{select-processes1}
+1 {selectProc(A,I) : shownProcess(A,I)} 1 %\label{select-processes1}
          :- sort(A). %\label{select-processes2}
 \end{lstlisting}
 The previous lines form a \emph{cardinality rule} that creates as many potential answer sets as the number of possible states
