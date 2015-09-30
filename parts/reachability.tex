@@ -62,14 +62,14 @@ instate(activeProcess(B,K),T+1) :-  %\label{e5}
 \end{lstlisting}
 
 The overall result of the pieces of program presented in this subsection
-is an answer set containing one answer for each
+is an answer set containing one answer for every
 possible simulation in \texttt{n} time steps,
 starting from a given initial state.
 
 \subsection{Reachability verification}
 In this section, we focus on the reachability of a set of processes which corresponds to the reachability property given in \pref{def:reachability}.
 %``Is it possible, starting from a given initial state, to play a certain number of actions so that a set of given processes are active in the resulting state?''
-In the following, we use the implementation computing the dynamics given in the previous section, in order to solve this reachability problem.
+We use the implementation computing the dynamics given in the previous section, in order to solve this reachability problem.
 Moreover, we first use a predicate \texttt{goal} to list the processes we want to reach (\refl{c1}) and one can add as many rules of this kind as there are objective processes.
 \begin{lstlisting}
 goal(activeProcess("z",1)). %\label{c1}
@@ -110,7 +110,7 @@ In each step \texttt{t}, the program computes the following predicates:
   \item possible bounces: \texttt{change(B,t)},
   \item new state: \texttt{instate(activeProcess(A,I),t+1)}
 \end{itemize}
-They are computed in the \texttt{step(t)} part
+They are computed in the \texttt{step(t)} part by
 the same way than previously,
 but only for the current step.
 The solver then compares its current answer sets with

@@ -70,9 +70,8 @@ that is, all possible combinations of processes by choosing only one process fro
 The previous lines form a \emph{cardinality rule} that creates as many potential answer sets as the number of possible states
 to take into account.
 Finally, the last step consists in filtering out any state that is not a fixed point,
-or, in other words, eliminating all candidate answer sets in which an action could be played. % (and thus lead the network into another state).
-For this, we use a constraint:
-any solution that satisfy the body of this constraint will be removed from the answer set.
+or, in other words, eliminating all candidate answer sets in which an action could be played. For this, we use a constraint:
+any solution that satisfies the body of this constraint will be removed from the answer set.
 Regarding our problem, a state is eliminated if there exists an action between two selected processes (\refll{constraintFix1}{constraintFix}).
 \begin{lstlisting}
 :- action(A,I,B,J,_), selectProc(A,I), %\label{constraintFix1}
